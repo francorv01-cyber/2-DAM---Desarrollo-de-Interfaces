@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<title>NOIR SYSTEM — Control Exclusivo de Aforo VIP</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary-container": "#404758",
+            "surface-dim": "#090d16",
+            "primary": "#f3d392",
+            "primary-fixed": "#ffdf9f",
+            "primary-container": "#d6b779",
+            "on-primary-container": "#402d00",
+            "on-primary": "#402d00",
+            "secondary": "#c0c6db",
+            "on-secondary": "#293040",
+            "surface": "#090d16",
+            "surface-container-lowest": "#060910",
+            "surface-container-low": "#0f1422",
+            "surface-container": "#141a2a",
+            "surface-container-high": "#1e263c",
+            "surface-container-highest": "#28324f",
+            "surface-bright": "#333f61",
+            "outline": "#998f81",
+            "outline-variant": "#4d463a",
+            "on-surface": "#f5f3ee",
+            "on-surface-variant": "#c9c2b4",
+            "background": "#090d16",
+            "on-background": "#f5f3ee",
+            "error": "#ff6b6b",
+            "error-container": "#93000a",
+            "on-error-container": "#ffdad6"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            "display-lg": ["Outfit", "sans-serif"],
+            "headline-lg": ["Outfit", "sans-serif"],
+            "headline-md": ["Outfit", "sans-serif"],
+            "headline-sm": ["Outfit", "sans-serif"],
+            "label-caps": ["Outfit", "sans-serif"],
+            "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "body-md": ["Plus Jakarta Sans", "sans-serif"],
+            "body-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "label-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "label-md": ["Plus Jakarta Sans", "sans-serif"],
+            "metric-display": ["Outfit", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary selection:text-on-primary min-h-screen flex flex-col justify-between font-body-md">
+<!-- Fixed Top Header -->
+<header class="fixed top-0 left-0 w-full z-50 bg-[#090d16]/90 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_4px_30px_rgba(0,0,0,0.7)]">
+<div class="h-20 w-full px-4 lg:px-8 flex items-center justify-between gap-4">
+<div class="flex items-center gap-5">
+<div class="flex flex-col justify-center">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-2xl tracking-wider text-primary font-bold">NOIR</span>
+<span class="font-label-caps text-[10px] tracking-widest uppercase text-on-primary font-bold px-2 py-0.5 rounded bg-primary-container">CLUB</span>
+</div>
+<span class="font-label-caps text-[11px] uppercase text-on-surface-variant tracking-widest hidden sm:inline-block">EXCLUSIVE NIGHTLIFE CAPACITY INTELLIGENCE</span>
+</div>
+<div class="h-8 w-px bg-outline-variant/30 hidden lg:block"></div>
+<div class="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/20">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_#f3d392]"></div>
+<span class="font-label-caps text-[11px] uppercase text-primary tracking-wider font-semibold">SALA VIP ACTIVA • TIEMPO REAL</span>
+</div>
+</div>
+<!-- Navigation tabs: Live Panel & 2026 Annual History -->
+<nav class="hidden md:flex items-center gap-1.5 bg-surface-container-lowest p-1 rounded-xl border border-outline-variant/20">
+<button class="px-5 py-2 rounded-lg font-label-caps text-[12px] uppercase tracking-wider font-semibold transition-all bg-primary text-on-primary shadow-[0_0_15px_rgba(243,211,146,0.3)]" id="nav-btn-live" onclick="switchMainTab('live')">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">dashboard</span> PANEL EN VIVO</span>
+</button>
+<button class="px-5 py-2 rounded-lg font-label-caps text-[12px] uppercase tracking-wider font-semibold transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60" id="nav-btn-history" onclick="switchMainTab('history')">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">calendar_month</span> HISTORIAL ANUAL 2026</span>
+</button>
+</nav>
+<!-- Status indicator & Operator -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high/80 border border-outline-variant/30" id="header-status-badge">
+<span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]" id="header-status-dot"></span>
+<span class="font-label-caps text-[11px] text-on-surface font-medium hidden sm:inline" id="header-status-text">&lt;80% ÓPTIMO</span>
+</div>
+<div class="hidden xl:flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-lg border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-[18px]">nightlife</span>
+<span class="font-label-caps text-[11px] uppercase text-on-surface-variant">OPERADOR: MASTER ACCESS #1</span>
+</div>
+<div class="flex items-center gap-1.5">
+<button aria-label="Audio feedback" class="p-2 rounded-lg bg-surface-container-low hover:bg-surface-container-high border border-outline-variant/20 text-primary transition-colors flex items-center justify-center" id="btn-toggle-sound" onclick="toggleSound()" title="Sonido activado">
+<span class="material-symbols-outlined text-[20px]" id="sound-icon">volume_up</span>
+</button>
+<button aria-label="Pantalla completa" class="p-2 rounded-lg bg-surface-container-low hover:bg-surface-container-high border border-outline-variant/20 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center" onclick="toggleFullScreen()">
+<span class="material-symbols-outlined text-[20px]">fullscreen</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Mobile Navigation Bar -->
+<div class="md:hidden flex items-center justify-center border-t border-outline-variant/15 bg-surface-container-lowest/90 px-4 py-2">
+<div class="flex items-center gap-2 w-full">
+<button class="flex-1 py-1.5 rounded-md font-label-caps text-[11px] uppercase tracking-wider font-semibold text-center bg-primary text-on-primary" id="mobile-nav-live" onclick="switchMainTab('live')">
+          Panel en Vivo
+        </button>
+<button class="flex-1 py-1.5 rounded-md font-label-caps text-[11px] uppercase tracking-wider font-semibold text-center text-on-surface-variant bg-surface-container-high" id="mobile-nav-history" onclick="switchMainTab('history')">
+          Historial 2026
+        </button>
+</div>
+</div>
+</header>
+<!-- Main Content Wrapper -->
+<main class="w-full pt-28 md:pt-24 min-h-[calc(100vh-4rem)] flex-1 relative overflow-hidden">
+<!-- Toast Notifications -->
+<div class="fixed top-24 right-4 lg:right-8 z-50 flex flex-col gap-2 pointer-events-none" id="toast-container"></div>
+<!-- Background Atmospheric Imagery (Elegant Nightclub Interior) -->
+<div class="fixed inset-0 w-full h-full pointer-events-none z-0">
+<div class="absolute inset-0 bg-cover bg-center transition-all duration-1000 opacity-40 filter contrast-125 saturate-110" style="background-image: url('https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&amp;fit=crop&amp;w=2000&amp;q=80');"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-[#090d16]/80 via-[#090d16]/88 to-[#090d16]"></div>
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(214,183,121,0.12)_0%,_transparent_75%)]"></div>
+</div>
+<div class="relative z-10 w-full max-w-[1600px] mx-auto px-4 lg:px-8 pb-16 flex flex-col gap-8">
+<!-- ================= SECTION 1: LIVE CONTROL PANEL ================= -->
+<section class="flex flex-col gap-8 transition-opacity duration-300" id="section-live-panel">
+<!-- Venue Header Banner & Capacity Controller -->
+<div class="w-full flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 bg-surface-container/70 backdrop-blur-xl p-5 rounded-2xl border border-outline-variant/30 shadow-2xl">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary-container/20 border border-primary/30 flex items-center justify-center text-primary shadow-[0_0_15px_rgba(243,211,146,0.2)]">
+<span class="material-symbols-outlined text-[28px]">nightlife</span>
+</div>
+<div>
+<div class="flex items-center gap-3">
+<h1 class="font-headline-md text-xl md:text-2xl text-on-surface font-semibold tracking-wide">NOIR CLUB — EXCLUSIVE</h1>
+<span class="px-2.5 py-0.5 rounded-full font-label-caps text-[10px] tracking-wider uppercase bg-primary-container/30 text-primary border border-primary/30">AFORO PRIVADO VIP</span>
+</div>
+<p class="font-body-sm text-xs md:text-sm text-on-surface-variant mt-0.5">Control perimetral legal, auditoría estricta y balance demográfico</p>
+</div>
+</div>
+<!-- Capacity adjust and Reset -->
+<div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-between lg:justify-end">
+<div class="flex items-center gap-2 bg-surface-container-lowest/90 px-3.5 py-1.5 rounded-xl border border-outline-variant/30">
+<span class="font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant font-medium">AFORO MÁXIMO LEGAL:</span>
+<div class="flex items-center gap-1.5">
+<input class="w-20 bg-surface-container text-primary font-headline-sm text-base md:text-lg font-bold text-center rounded-lg py-1 border border-outline-variant/40 outline-none focus:border-primary transition-colors" id="input-max-capacity" max="2500" min="10" type="number" value="250"/>
+<button class="p-1.5 rounded-lg bg-surface-container-high hover:bg-primary-container hover:text-on-primary-container text-primary transition-colors flex items-center justify-center" onclick="updateMaxCapacity()" title="Guardar aforo máximo">
+<span class="material-symbols-outlined text-[18px]">save</span>
+</button>
+</div>
+</div>
+<button class="px-4 py-2 rounded-xl bg-error-container/20 hover:bg-error-container/40 border border-error/40 text-error font-label-caps text-[11px] uppercase tracking-wider font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-error/10" onclick="openResetModal()">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+<span>REINICIAR SALA</span>
+</button>
+</div>
+</div>
+<!-- Bento Hero Grid: Big Counter Display & 4-Grid Micro KPIs -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Left: Monumental Occupancy Card (7 cols) -->
+<div class="lg:col-span-7 bg-surface-container/60 backdrop-blur-2xl p-6 md:p-8 rounded-2xl border border-outline-variant/30 shadow-2xl flex flex-col justify-between relative overflow-hidden">
+<div class="absolute -right-20 -bottom-20 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center justify-between gap-4 mb-4">
+<div class="flex items-center gap-2.5">
+<span class="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.9)] animate-pulse" id="occupancy-indicator-dot"></span>
+<span class="px-3 py-1 rounded-full font-label-caps text-[11px] uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-800/40 font-semibold tracking-wider" id="occupancy-status-badge">AFORO DISPONIBLE (&lt;80%)</span>
+</div>
+<span class="font-label-caps text-[11px] uppercase text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[16px]">sensors</span>
+                TELEMETRÍA EN DIRECTO
+              </span>
+</div>
+<!-- Hero Number & Strict Grammar -->
+<div class="my-4 flex flex-col items-start">
+<span class="font-label-caps text-xs uppercase text-primary tracking-widest font-semibold mb-1">OCUPACIÓN EN TIEMPO REAL</span>
+<div class="flex items-baseline gap-3 flex-wrap">
+<span class="font-display-lg text-[68px] md:text-[104px] leading-none font-light text-on-surface tracking-tight drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]" id="metric-main-count">0</span>
+<span class="font-headline-md text-2xl md:text-3xl text-primary font-light uppercase tracking-wider" id="metric-main-grammar">0 PERSONAS</span>
+</div>
+<p class="font-body-sm text-xs md:text-sm text-on-surface-variant mt-2" id="metric-sub-detail">
+                Representa el <span class="text-primary font-semibold" id="metric-percent-inline">0.0%</span> de la capacidad total del establecimiento (<span class="text-on-surface font-semibold" id="metric-max-display">250</span> plazas).
+              </p>
+</div>
+<!-- Progress Bar HUD with 80% & 100% threshold markers -->
+<div class="mt-6 flex flex-col gap-2">
+<div class="flex justify-between items-center font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant">
+<span>0% CAPACIDAD</span>
+<span class="text-amber-400 flex items-center gap-1">▲ UMBRAL ALTO (80%)</span>
+<span class="text-error flex items-center gap-1">▲ LÍMITE LEGAL (100%)</span>
+</div>
+<div class="relative w-full h-3.5 bg-surface-container-lowest rounded-full overflow-hidden p-0.5 border border-outline-variant/30">
+<div class="absolute left-[80%] top-0 bottom-0 w-0.5 bg-amber-400/80 z-10"></div>
+<div class="absolute left-[99.5%] top-0 bottom-0 w-0.5 bg-error z-10 shadow-[0_0_8px_#ef4444]"></div>
+<!-- Dynamic Bar -->
+<div class="h-full rounded-full transition-all duration-500 bg-emerald-500 w-[0%]" id="metric-progress-bar"></div>
+</div>
+<div class="flex justify-between items-center font-label-md text-xs text-on-surface-variant mt-1">
+<span>Plazas libres: <strong class="text-primary font-semibold text-sm" id="metric-free-slots">250</strong></span>
+<span>Límite máximo: <strong class="text-on-surface font-semibold text-sm" id="metric-limit-slots">250</strong></span>
+</div>
+</div>
+</div>
+<!-- Right: 4 Micro KPI Cards (5 cols) -->
+<div class="lg:col-span-5 grid grid-cols-2 gap-4">
+<!-- KPI 1: Plazas Disponibles -->
+<div class="bg-surface-container/60 backdrop-blur-xl p-5 rounded-2xl border border-outline-variant/30 flex flex-col justify-between shadow-xl hover:border-primary/40 transition-colors">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-[11px] uppercase tracking-wider font-semibold">PLAZAS DISPONIBLES</span>
+<span class="material-symbols-outlined text-primary text-[22px]">event_seat</span>
+</div>
+<div class="my-2">
+<span class="font-metric-display text-4xl lg:text-5xl font-light text-on-surface tracking-tight" id="kpi-available-slots">250</span>
+</div>
+<div class="flex items-center gap-1 text-emerald-400 font-label-md text-xs font-medium" id="kpi-status-quick">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Acceso habilitado</span>
+</div>
+</div>
+<!-- KPI 2: % Ocupación -->
+<div class="bg-surface-container/60 backdrop-blur-xl p-5 rounded-2xl border border-outline-variant/30 flex flex-col justify-between shadow-xl hover:border-primary/40 transition-colors">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-[11px] uppercase tracking-wider font-semibold">% OCUPACIÓN</span>
+<span class="material-symbols-outlined text-primary text-[22px]">pie_chart</span>
+</div>
+<div class="my-2">
+<span class="font-metric-display text-4xl lg:text-5xl font-light text-on-surface tracking-tight" id="kpi-occupancy-percent">0.0%</span>
+</div>
+<span class="font-label-md text-xs text-on-surface-variant">Índice dinámico legal</span>
+</div>
+<!-- KPI 3: Entradas Hoy -->
+<div class="bg-surface-container/60 backdrop-blur-xl p-5 rounded-2xl border border-outline-variant/30 flex flex-col justify-between shadow-xl hover:border-emerald-500/40 transition-colors">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-[11px] uppercase tracking-wider font-semibold">ENTRADAS HOY</span>
+<span class="material-symbols-outlined text-emerald-400 text-[22px]">login</span>
+</div>
+<div class="my-2">
+<span class="font-metric-display text-4xl lg:text-5xl font-light text-emerald-400 tracking-tight" id="kpi-total-entries">0</span>
+</div>
+<span class="font-label-md text-xs text-on-surface-variant">Flujo acumulado sesión</span>
+</div>
+<!-- KPI 4: Salidas Hoy -->
+<div class="bg-surface-container/60 backdrop-blur-xl p-5 rounded-2xl border border-outline-variant/30 flex flex-col justify-between shadow-xl hover:border-amber-400/40 transition-colors">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-[11px] uppercase tracking-wider font-semibold">SALIDAS HOY</span>
+<span class="material-symbols-outlined text-amber-400 text-[22px]">logout</span>
+</div>
+<div class="my-2">
+<span class="font-metric-display text-4xl lg:text-5xl font-light text-amber-400 tracking-tight" id="kpi-total-exits">0</span>
+</div>
+<span class="font-label-md text-xs text-on-surface-variant">Rotación registrada</span>
+</div>
+</div>
+</div>
+<!-- Interactive Gate Control Panel & Live Audit Log -->
+<div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- Left Column: Gate Access Controller (8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- Access Controller Card -->
+<div class="bg-surface-container/70 backdrop-blur-xl p-6 md:p-8 rounded-2xl border border-outline-variant/30 shadow-2xl flex flex-col gap-6">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">local_bar</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-lg md:text-xl text-on-surface font-semibold">CONTROL DE ACCESO VIP — NOIR CLUB</h2>
+<p class="font-body-sm text-xs text-on-surface-variant">Clasificación demográfica binaria exclusiva y control de mayoría de edad</p>
+</div>
+</div>
+<span class="px-3 py-1 rounded-full font-label-caps text-[11px] uppercase bg-primary-container/20 text-primary border border-primary/30 font-semibold tracking-wider">PROTOCOLO VIP</span>
+</div>
+<!-- Mandatory Age Gate Check (Strict Condition 3) -->
+<div class="bg-amber-950/25 border border-amber-500/30 p-4 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-inner">
+<div class="flex items-start md:items-center gap-3">
+<span class="material-symbols-outlined text-amber-400 text-[28px] shrink-0">verified_user</span>
+<div>
+<span class="font-label-caps text-xs uppercase text-amber-300 font-bold tracking-wider block">18+ — ACCESO EXCLUSIVO PARA MAYORES DE EDAD</span>
+<p class="font-body-sm text-xs text-on-surface-variant mt-0.5">Requisito legal mandatorio para autorizar cualquier entrada a Noir Club.</p>
+</div>
+</div>
+<label class="flex items-center gap-3 cursor-pointer bg-surface-container-high/90 px-4 py-2.5 rounded-xl border border-outline-variant/30 hover:border-primary/50 transition-all shrink-0">
+<input class="w-5 h-5 rounded accent-primary cursor-pointer" id="checkbox-age-18" onchange="toggleAgeVerification(this.checked)" type="checkbox"/>
+<span class="font-label-md text-xs text-on-surface font-medium select-none">Confirmo que tiene 18+ años</span>
+</label>
+</div>
+<!-- Only 2 Categories: HOMBRE y MUJER (Strict Condition 2) -->
+<div class="flex flex-col gap-3">
+<span class="font-label-caps text-xs uppercase tracking-wider text-on-surface-variant font-semibold">SELECCIONAR GÉNERO PARA LA OPERACIÓN:</span>
+<div class="grid grid-cols-2 gap-4">
+<!-- HOMBRE Card -->
+<button class="p-5 rounded-xl border transition-all text-left flex flex-col gap-2 relative overflow-hidden bg-primary-container/20 border-primary shadow-[0_0_15px_rgba(214,183,121,0.15)]" id="cat-card-hombre" onclick="selectGender('hombre')" type="button">
+<div class="flex items-center justify-between text-on-surface">
+<span class="font-label-caps text-xs md:text-sm uppercase tracking-wider font-bold text-primary">HOMBRE</span>
+<span class="material-symbols-outlined text-primary text-[24px]">man</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-3xl font-light text-on-surface" id="count-gender-hombre">0</span>
+<span class="font-label-md text-xs text-on-surface-variant">En sala</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden mt-1">
+<div class="bg-primary h-full transition-all" id="ratio-bar-hombre" style="width: 50%"></div>
+</div>
+</button>
+<!-- MUJER Card -->
+<button class="p-5 rounded-xl border transition-all text-left flex flex-col gap-2 relative overflow-hidden bg-surface-container-high/60 border-outline-variant/30 hover:border-outline-variant/60" id="cat-card-mujer" onclick="selectGender('mujer')" type="button">
+<div class="flex items-center justify-between text-on-surface">
+<span class="font-label-caps text-xs md:text-sm uppercase tracking-wider font-bold text-on-surface-variant" id="label-mujer">MUJER</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[24px]" id="icon-mujer">woman</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-3xl font-light text-on-surface" id="count-gender-mujer">0</span>
+<span class="font-label-md text-xs text-on-surface-variant">En sala</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden mt-1">
+<div class="bg-emerald-400 h-full transition-all" id="ratio-bar-mujer" style="width: 50%"></div>
+</div>
+</button>
+</div>
+</div>
+<!-- Action Buttons: Strict Entradas (+1) y Salidas (-1) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+<button class="w-full py-4 px-6 rounded-xl font-headline-sm text-base md:text-lg uppercase font-semibold flex items-center justify-center gap-3 transition-all opacity-40 cursor-not-allowed bg-primary text-on-primary shadow-xl" disabled="" id="btn-club-entry" onclick="handleClubEntry()">
+<span class="material-symbols-outlined text-[24px]">person_add</span>
+<span>REGISTRAR ENTRADA (+1)</span>
+</button>
+<button class="w-full py-4 px-6 rounded-xl font-headline-sm text-base md:text-lg uppercase font-semibold flex items-center justify-center gap-3 transition-all opacity-40 cursor-not-allowed bg-surface-container-high border border-outline-variant/30 text-on-surface shadow-md" disabled="" id="btn-club-exit" onclick="handleClubExit()">
+<span class="material-symbols-outlined text-[24px]">person_remove</span>
+<span>REGISTRAR SALIDA (-1)</span>
+</button>
+</div>
+<div class="text-center font-label-md text-xs text-amber-300/90 py-1" id="club-lock-notice">
+                * Marque la confirmación de mayoría de edad (18+) para habilitar el registro de entrada.
+              </div>
+</div>
+<!-- Live Charts: Demographics Binary Ratio & Hourly Trends -->
+<div class="bg-surface-container/70 backdrop-blur-xl p-6 md:p-8 rounded-2xl border border-outline-variant/30 shadow-2xl flex flex-col gap-6">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[22px]">analytics</span>
+<h3 class="font-headline-sm text-lg text-on-surface font-semibold">DISTRIBUCIÓN DEMOGRÁFICA Y FLUJO HORARIO</h3>
+</div>
+<span class="font-label-caps text-[11px] uppercase text-on-surface-variant">SALA VIP NOIR</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+<!-- Binary Demographic Donut -->
+<div class="bg-surface-container-lowest/70 p-5 rounded-xl border border-outline-variant/20 flex flex-col items-center justify-center gap-4">
+<span class="font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant font-medium">BALANCE HOMBRE / MUJER (EN SALA)</span>
+<div class="relative w-40 h-40 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90 transform" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#1c2436" stroke-width="12"></circle>
+<circle class="transition-all duration-700" cx="50" cy="50" fill="transparent" id="donut-slice-hombre" r="40" stroke="#f3d392" stroke-dasharray="0 251.2" stroke-dashoffset="0" stroke-width="12"></circle>
+<circle class="transition-all duration-700" cx="50" cy="50" fill="transparent" id="donut-slice-mujer" r="40" stroke="#34d399" stroke-dasharray="0 251.2" stroke-dashoffset="0" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+<span class="font-headline-sm text-2xl text-on-surface font-light" id="donut-center-total">0</span>
+<span class="font-label-caps text-[9px] uppercase tracking-widest text-on-surface-variant">PERSONAS</span>
+</div>
+</div>
+<!-- Donut Legend -->
+<div class="flex items-center gap-6 font-label-md text-xs">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary shadow-[0_0_8px_#f3d392]"></span>
+<span class="text-on-surface">Hombres: <strong class="text-primary" id="legend-hombre-pct">50%</strong></span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+<span class="text-on-surface">Mujeres: <strong class="text-emerald-400" id="legend-mujer-pct">50%</strong></span>
+</div>
+</div>
+</div>
+<!-- Hourly Trends (Noir Nightclub 23:00 to 06:00) -->
+<div class="bg-surface-container-lowest/70 p-5 rounded-xl border border-outline-variant/20 flex flex-col gap-3">
+<span class="font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant font-medium">CURVA DE ACCESO NOCTURNO (HOY)</span>
+<div class="h-40 w-full flex items-end gap-2 pt-4 pb-2 px-1">
+<div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+<div class="w-full flex items-end gap-1 h-28">
+<div class="w-1/2 bg-emerald-500/80 rounded-t transition-all duration-500 h-[25%]" title="23:00 Entradas"></div>
+<div class="w-1/2 bg-amber-500/80 rounded-t transition-all duration-500 h-[5%]" title="23:00 Salidas"></div>
+</div>
+<span class="font-mono text-[10px] text-on-surface-variant">23h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+<div class="w-full flex items-end gap-1 h-28">
+<div class="w-1/2 bg-emerald-500/80 rounded-t transition-all duration-500 h-[65%]" title="01:00 Entradas"></div>
+<div class="w-1/2 bg-amber-500/80 rounded-t transition-all duration-500 h-[15%]" title="01:00 Salidas"></div>
+</div>
+<span class="font-mono text-[10px] text-on-surface-variant">01h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+<div class="w-full flex items-end gap-1 h-28">
+<div class="w-1/2 bg-emerald-500/80 rounded-t transition-all duration-500 h-[92%]" title="02:30 Entradas"></div>
+<div class="w-1/2 bg-amber-500/80 rounded-t transition-all duration-500 h-[25%]" title="02:30 Salidas"></div>
+</div>
+<span class="font-mono text-[10px] text-on-surface-variant">02:30</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+<div class="w-full flex items-end gap-1 h-28">
+<div class="w-1/2 bg-emerald-500/80 rounded-t transition-all duration-500 h-[45%]" title="04:00 Entradas"></div>
+<div class="w-1/2 bg-amber-500/80 rounded-t transition-all duration-500 h-[60%]" title="04:00 Salidas"></div>
+</div>
+<span class="font-mono text-[10px] text-on-surface-variant">04h</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+<div class="w-full flex items-end gap-1 h-28">
+<div class="w-1/2 bg-emerald-500/80 rounded-t transition-all duration-500 h-[10%]" title="05:30 Entradas"></div>
+<div class="w-1/2 bg-amber-500/80 rounded-t transition-all duration-500 h-[85%]" title="05:30 Salidas"></div>
+</div>
+<span class="font-mono text-[10px] text-on-surface-variant">05:30</span>
+</div>
+</div>
+<div class="flex items-center justify-center gap-5 font-label-md text-xs pt-1 border-t border-outline-variant/15">
+<div class="flex items-center gap-1.5">
+<div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
+<span class="text-on-surface-variant">Entradas</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="w-2.5 h-2.5 bg-amber-500 rounded-sm"></div>
+<span class="text-on-surface-variant">Salidas</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Installation Status & Live Audit Log (4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Venue Profile Badge Card -->
+<div class="bg-surface-container/70 backdrop-blur-xl p-6 rounded-2xl border border-outline-variant/30 shadow-2xl flex flex-col gap-4">
+<span class="font-label-caps text-[11px] uppercase tracking-wider text-on-surface-variant font-medium">ESTADO DE INSTALACIÓN</span>
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high border border-primary/30 flex items-center justify-center text-primary shadow-[0_0_15px_rgba(243,211,146,0.15)]">
+<span class="material-symbols-outlined text-[28px]">local_bar</span>
+</div>
+<div class="flex flex-col">
+<h4 class="font-headline-sm text-lg text-on-surface font-semibold">NOIR CLUB EXCLUSIVE</h4>
+<span class="font-label-md text-xs text-primary font-medium">Licencia Nocturna Categoría Oro VIP</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest/80 p-3.5 rounded-xl border border-outline-variant/20 flex flex-col gap-2 font-body-sm text-xs">
+<div class="flex justify-between text-on-surface-variant">
+<span>Protocolo Legal:</span>
+<span class="text-on-surface font-mono font-medium">18+ Riguroso</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Nube &amp; Sincronización:</span>
+<span class="text-emerald-400 font-mono font-medium flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Local Node 01
+                  </span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Operador en Turno:</span>
+<span class="text-on-surface font-mono">OP_VIP_MASTER</span>
+</div>
+</div>
+</div>
+<!-- Audit Log Table & CSV Exporter -->
+<div class="bg-surface-container/70 backdrop-blur-xl p-6 rounded-2xl border border-outline-variant/30 shadow-2xl flex flex-col gap-4">
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">history</span>
+<h3 class="font-headline-sm text-base text-on-surface font-semibold">AUDITORÍA EN VIVO</h3>
+</div>
+<button class="px-3 py-1 rounded-lg bg-primary-container text-on-primary-container font-label-caps text-[11px] uppercase tracking-wider font-semibold flex items-center gap-1.5 hover:brightness-110 transition-all shadow" onclick="exportHistoryCSV()">
+<span class="material-symbols-outlined text-[14px]">download</span>
+<span>CSV</span>
+</button>
+</div>
+<p class="font-body-sm text-xs text-on-surface-variant">Registros inmediatos e inmutables para inspección legal:</p>
+<!-- Table -->
+<div class="w-full max-h-[340px] overflow-y-auto rounded-xl bg-surface-container-lowest/90 border border-outline-variant/20 p-1">
+<table class="w-full text-left font-body-sm text-xs">
+<thead>
+<tr class="text-on-surface-variant font-label-caps text-[10px] uppercase border-b border-outline-variant/20">
+<th class="py-2.5 px-3">Tipo</th>
+<th class="py-2.5 px-3">Detalle</th>
+<th class="py-2.5 px-3 text-right">Hora</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/15" id="audit-log-tbody">
+<!-- Dynamic -->
+</tbody>
+</table>
+<div class="py-8 text-center text-on-surface-variant font-label-md text-xs hidden" id="audit-empty-message">
+                  Sin registros en la sesión actual.
+                </div>
+</div>
+<!-- Quick Keyboard Shortcuts Guide -->
+<div class="bg-surface-container-high/40 p-3 rounded-xl border border-outline-variant/20 font-body-sm text-xs flex flex-col gap-1.5 text-on-surface-variant">
+<span class="font-label-caps text-[10px] uppercase tracking-wider text-primary font-semibold">ATAJOS DE TECLADO RÁPIDOS:</span>
+<div class="flex justify-between">
+<span>[+] o [↑] Flecha arriba:</span>
+<span class="text-on-surface font-mono font-medium">Entrada (+1)</span>
+</div>
+<div class="flex justify-between">
+<span>[-] o [↓] Flecha abajo:</span>
+<span class="text-on-surface font-mono font-medium">Salida (-1)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= SECTION 2: 2026 ANNUAL HISTORICAL CAPACITY ================= -->
+<section class="hidden flex-col gap-8 transition-opacity duration-300" id="section-history-2026">
+<!-- Header Banner for 2026 History -->
+<div class="w-full flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 bg-surface-container/70 backdrop-blur-xl p-6 rounded-2xl border border-primary/30 shadow-2xl relative overflow-hidden">
+<div class="absolute -right-16 -top-16 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-2xl bg-primary-container/20 border border-primary/40 flex items-center justify-center text-primary shadow-[0_0_20px_rgba(243,211,146,0.25)]">
+<span class="material-symbols-outlined text-[32px]">calendar_month</span>
+</div>
+<div>
+<div class="flex items-center gap-3">
+<h2 class="font-headline-md text-2xl md:text-3xl text-on-surface font-semibold tracking-wide">HISTORIAL DE AFORO 2026 — NOIR CLUB</h2>
+<span class="px-3 py-0.5 rounded-full font-label-caps text-[11px] uppercase bg-primary text-on-primary font-bold">AÑO 2026</span>
+</div>
+<p class="font-body-sm text-xs md:text-sm text-on-surface-variant mt-1">Auditoría consolidada anual de aforo, noches Sold Out y balance demográfico</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-bright border border-outline-variant/30 text-on-surface font-label-caps text-xs uppercase tracking-wider font-semibold flex items-center gap-2 transition-all shadow" onclick="exportAnnualReportCSV()">
+<span class="material-symbols-outlined text-[18px]">table_view</span>
+<span>EXPORTAR CSV 2026</span>
+</button>
+<button class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-fixed text-on-primary font-label-caps text-xs uppercase tracking-wider font-semibold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(243,211,146,0.3)]" onclick="simulatePdfReport()">
+<span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+<span>INFORME OFICIAL PDF</span>
+</button>
+</div>
+</div>
+<!-- 2026 Annual KPI Highlight Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+<!-- KPI 1: Aforo Promedio -->
+<div class="bg-surface-container/60 backdrop-blur-xl p-5 rounded-2xl border border-outline-variant/30 flex flex-col justify-between shadow-xl">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-[11px] uppercase tracking-wider font-semibold">AFORO PROMEDIO</span>
+<span class="material-symbols-outlined text-primary text-[22px]">trending_up</span>
+</div>
+<div class="my-2">
+<span class="font-metric-display text-3xl lg:text-4xl font-light text-on-surface">214</span>
+<span class="font-headline-sm text-sm text-primary font-medium ml-1">/ 250</span>
+</div>
+<div class="flex items-center gap-1.5 text-xs text-primary">
+<span class="font-semibold">85.6%</span>
+<span class="text-on-surface-variant">ocupación media</span>
+</div>
+</div>
+<!-- KPI 2: Pico Máximo -->
+<div class="bg-surface-container/60 backdrop-blur-xl p-5 rounded-2xl border border-outline-variant/30 flex flex-col justify-between shadow-xl">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-[11px] uppercase tracking-wider font-semibold">PICO MÁXIMO ANUAL</span>
+<span class="material-symbols-outlined text-error text-[22px]">emergency</span>
+</div>
+<div class="my-2">
+<span class="font-metric-display text-3xl lg:text-4xl font-light text-error">250</span>
+<span class="font-label-caps text-xs text-on-surface-variant ml-1 font-bold">MÁX</span>
+</div>
+<div class="text-xs text-on-surface-variant">
+              Límite legal estricto
+            </div>
+</div>
+<!-- KPI 3: Noches Sold Out -->
+<div class="bg-surface-container/60 backdrop-blur-xl p-5 rounded-2xl border border-outline-variant/30 flex flex-col justify-between shadow-xl">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-[11px] uppercase tracking-wider font-semibold">NOCHES SOLD OUT</span>
+<span class="material-symbols-outlined text-amber-400 text-[22px]">verified</span>
+</div>
+<div class="my-2">
+<span class="font-metric-display text-3xl lg:text-4xl font-light text-amber-400">48</span>
+<span class="text-xs text-on-surface-variant ml-1">noches</span>
+</div>
+<div class="text-xs text-emerald-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+<span>+18% vs año anterior</span>
+</div>
+</div>
+<!-- KPI 4: Total Asistentes 2026 -->
+<div class="bg-surface-container/60 backdrop-blur-xl p-5 rounded-2xl border border-outline-variant/30 flex flex-col justify-between shadow-xl">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-[11px] uppercase tracking-wider font-semibold">ASISTENTES 2026</span>
+<span class="material-symbols-outlined text-emerald-400 text-[22px]">groups</span>
+</div>
+<div class="my-2">
+<span class="font-metric-display text-3xl lg:text-4xl font-light text-emerald-400">78,420</span>
+</div>
+<div class="text-xs text-on-surface-variant">
+              Registros verificados 18+
+            </div>
+</div>
+<!-- KPI 5: Demografía Anual Hombres vs Mujeres -->
+<div class="bg-surface-container/60 backdrop-blur-xl p-5 rounded-2xl border border-outline-variant/30 flex flex-col justify-between shadow-xl">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-caps text-[11px] uppercase tracking-wider font-semibold">RATIO ANUAL M / H</span>
+<span class="material-symbols-outlined text-primary text-[22px]">pie_chart</span>
+</div>
+<div class="my-2 flex items-baseline justify-between">
+<span class="font-headline-sm text-xl text-emerald-400 font-bold">52% M</span>
+<span class="text-xs text-on-surface-variant">/</span>
+<span class="font-headline-sm text-xl text-primary font-bold">48% H</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-2 rounded-full overflow-hidden flex">
+<div class="bg-emerald-400 h-full w-[52%]"></div>
+<div class="bg-primary h-full w-[48%]"></div>
+</div>
+</div>
+</div>
+<!-- 2026 Monthly Breakdown: Interactive Chart & Inspection Filter -->
+<div class="bg-surface-container/70 backdrop-blur-xl p-6 md:p-8 rounded-2xl border border-outline-variant/30 shadow-2xl flex flex-col gap-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-outline-variant/20">
+<div>
+<h3 class="font-headline-sm text-xl text-on-surface font-semibold">OCUPACIÓN MENSUAL 2026 (ENERO — DICIEMBRE)</h3>
+<p class="font-body-sm text-xs text-on-surface-variant">Haga clic en cualquier mes para inspeccionar sus métricas detalladas y eventos gala</p>
+</div>
+<!-- Quarter filter quick tabs -->
+<div class="flex items-center gap-1.5 bg-surface-container-lowest p-1 rounded-xl border border-outline-variant/30">
+<button class="px-3 py-1 rounded-lg font-label-caps text-xs uppercase font-semibold bg-primary text-on-primary" id="qtr-btn-all" onclick="filterQuarter('all')">TODOS</button>
+<button class="px-3 py-1 rounded-lg font-label-caps text-xs uppercase font-semibold text-on-surface-variant hover:text-on-surface" id="qtr-btn-q1" onclick="filterQuarter('q1')">Q1</button>
+<button class="px-3 py-1 rounded-lg font-label-caps text-xs uppercase font-semibold text-on-surface-variant hover:text-on-surface" id="qtr-btn-q2" onclick="filterQuarter('q2')">Q2</button>
+<button class="px-3 py-1 rounded-lg font-label-caps text-xs uppercase font-semibold text-on-surface-variant hover:text-on-surface" id="qtr-btn-q3" onclick="filterQuarter('q3')">Q3</button>
+<button class="px-3 py-1 rounded-lg font-label-caps text-xs uppercase font-semibold text-on-surface-variant hover:text-on-surface" id="qtr-btn-q4" onclick="filterQuarter('q4')">Q4</button>
+</div>
+</div>
+<!-- Monthly Bar Visualizer -->
+<div class="w-full overflow-x-auto pb-2">
+<div class="min-w-[700px] h-64 flex items-end gap-3 px-2 pt-6">
+<!-- Dynamically Populated Bars for 12 Months -->
+<div class="w-full h-full flex items-end justify-between gap-3" id="monthly-bars-container"></div>
+</div>
+</div>
+<!-- Selected Month Spotlight Detail Box -->
+<div class="bg-surface-container-lowest/90 p-5 rounded-xl border border-primary/30 flex flex-col md:flex-row items-center justify-between gap-6" id="month-spotlight-box">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/40 flex items-center justify-center text-primary font-bold font-headline-sm text-lg" id="spotlight-month-abbr">
+                AGO
+              </div>
+<div>
+<h4 class="font-headline-sm text-base text-on-surface font-semibold" id="spotlight-month-title">Agosto 2026 — Temporada Alta Noir VIP</h4>
+<p class="font-body-sm text-xs text-on-surface-variant" id="spotlight-month-desc">Máxima afluencia estival con 100% ocupación media y 9 noches Sold Out completas.</p>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-6">
+<div>
+<span class="font-label-caps text-[10px] uppercase text-on-surface-variant block">Ocupación Media</span>
+<span class="font-headline-sm text-lg text-primary font-bold" id="spotlight-month-pct">100.0%</span>
+</div>
+<div>
+<span class="font-label-caps text-[10px] uppercase text-on-surface-variant block">Sold Out</span>
+<span class="font-headline-sm text-lg text-amber-400 font-bold" id="spotlight-month-soldout">9 noches</span>
+</div>
+<div>
+<span class="font-label-caps text-[10px] uppercase text-on-surface-variant block">Ratio M / H</span>
+<span class="font-headline-sm text-lg text-emerald-400 font-bold" id="spotlight-month-ratio">54% / 46%</span>
+</div>
+<div>
+<span class="font-label-caps text-[10px] uppercase text-on-surface-variant block">Asistentes Mes</span>
+<span class="font-headline-sm text-lg text-on-surface font-bold" id="spotlight-month-total">7,750</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 2026 VIP Peak Gala Events Audit Table -->
+<div class="bg-surface-container/70 backdrop-blur-xl p-6 md:p-8 rounded-2xl border border-outline-variant/30 shadow-2xl flex flex-col gap-5">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[24px]">workspace_premium</span>
+<div>
+<h3 class="font-headline-sm text-lg md:text-xl text-on-surface font-semibold">EVENTOS GALA Y PICOS MÁXIMOS REGISTRADOS 2026</h3>
+<p class="font-body-sm text-xs text-on-surface-variant">Inspección de aforo al 100%, tiempos de Sold Out y desglose Hombre / Mujer</p>
+</div>
+</div>
+<span class="px-3 py-1 rounded-full font-label-caps text-[11px] uppercase bg-surface-container-high text-on-surface-variant border border-outline-variant/30">AUDITORÍA POLICIAL VIP</span>
+</div>
+<div class="overflow-x-auto rounded-xl border border-outline-variant/20 bg-surface-container-lowest/80">
+<table class="w-full text-left font-body-sm text-xs">
+<thead>
+<tr class="text-on-surface-variant font-label-caps text-[10px] uppercase border-b border-outline-variant/30 bg-surface-container-low/50">
+<th class="py-3 px-4">Fecha &amp; Evento</th>
+<th class="py-3 px-4">Aforo Máximo</th>
+<th class="py-3 px-4">Tiempo a Sold Out</th>
+<th class="py-3 px-4">Hombres en Sala</th>
+<th class="py-3 px-4">Mujeres en Sala</th>
+<th class="py-3 px-4 text-center">Estado Auditoría</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/15 text-on-surface font-body-sm">
+<tr class="hover:bg-surface-container-high/30 transition-colors">
+<td class="py-3.5 px-4 font-semibold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">celebration</span>
+<span>01 ENE 2026 — NOIR New Year Gala 2026</span>
+</td>
+<td class="py-3.5 px-4 font-mono font-bold text-error">250 / 250 (100%)</td>
+<td class="py-3.5 px-4 font-mono">00:45 hs (Récord)</td>
+<td class="py-3.5 px-4 text-primary font-mono">118 (47.2%)</td>
+<td class="py-3.5 px-4 text-emerald-400 font-mono">132 (52.8%)</td>
+<td class="py-3.5 px-4 text-center">
+<span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold font-label-caps uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-800/40">AUDITADO OK</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/30 transition-colors">
+<td class="py-3.5 px-4 font-semibold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">stars</span>
+<span>14 FEB 2026 — Velvet Valentine Masquerade</span>
+</td>
+<td class="py-3.5 px-4 font-mono font-bold text-error">250 / 250 (100%)</td>
+<td class="py-3.5 px-4 font-mono">01:10 hs</td>
+<td class="py-3.5 px-4 text-primary font-mono">122 (48.8%)</td>
+<td class="py-3.5 px-4 text-emerald-400 font-mono">128 (51.2%)</td>
+<td class="py-3.5 px-4 text-center">
+<span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold font-label-caps uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-800/40">AUDITADO OK</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/30 transition-colors">
+<td class="py-3.5 px-4 font-semibold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">flare</span>
+<span>23 JUN 2026 — Summer Solstice White Party</span>
+</td>
+<td class="py-3.5 px-4 font-mono font-bold text-error">250 / 250 (100%)</td>
+<td class="py-3.5 px-4 font-mono">00:55 hs</td>
+<td class="py-3.5 px-4 text-primary font-mono">120 (48.0%)</td>
+<td class="py-3.5 px-4 text-emerald-400 font-mono">130 (52.0%)</td>
+<td class="py-3.5 px-4 text-center">
+<span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold font-label-caps uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-800/40">AUDITADO OK</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/30 transition-colors">
+<td class="py-3.5 px-4 font-semibold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">nights_stay</span>
+<span>15 AGO 2026 — Midsummer Noir Ibiza Session</span>
+</td>
+<td class="py-3.5 px-4 font-mono font-bold text-error">250 / 250 (100%)</td>
+<td class="py-3.5 px-4 font-mono">00:30 hs (Récord)</td>
+<td class="py-3.5 px-4 text-primary font-mono">115 (46.0%)</td>
+<td class="py-3.5 px-4 text-emerald-400 font-mono">135 (54.0%)</td>
+<td class="py-3.5 px-4 text-center">
+<span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold font-label-caps uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-800/40">AUDITADO OK</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/30 transition-colors">
+<td class="py-3.5 px-4 font-semibold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">dark_mode</span>
+<span>31 OCT 2026 — Noir Halloween Masquerade 2026</span>
+</td>
+<td class="py-3.5 px-4 font-mono font-bold text-error">250 / 250 (100%)</td>
+<td class="py-3.5 px-4 font-mono">01:05 hs</td>
+<td class="py-3.5 px-4 text-primary font-mono">124 (49.6%)</td>
+<td class="py-3.5 px-4 text-emerald-400 font-mono">126 (50.4%)</td>
+<td class="py-3.5 px-4 text-center">
+<span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold font-label-caps uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-800/40">AUDITADO OK</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+<!-- Safety Reset Confirmation Modal -->
+<div class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4" id="reset-modal">
+<div class="bg-surface-container p-6 md:p-8 rounded-2xl max-w-md w-full border border-outline-variant/40 shadow-2xl flex flex-col gap-4">
+<div class="flex items-center gap-3 text-error">
+<span class="material-symbols-outlined text-[34px]">warning</span>
+<h3 class="font-headline-sm text-xl text-on-surface font-semibold">Confirmar Puesta a Cero</h3>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant leading-relaxed">
+          ¿Confirma el vaciado completo de la sala en <strong class="text-primary">NOIR CLUB</strong>? Se reestablecerán a 0 tanto Hombres como Mujeres y se registrará un evento inmutable de auditoría.
+        </p>
+<div class="flex items-center justify-end gap-3 mt-3">
+<button class="px-4 py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-xs font-semibold transition-colors" onclick="closeResetModal()">
+            Cancelar
+          </button>
+<button class="px-5 py-2.5 rounded-xl bg-error text-white font-label-md text-xs font-semibold hover:brightness-110 transition-colors shadow-lg shadow-error/20" onclick="confirmResetCapacity()">
+            Sí, Vaciar Sala
+          </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-[#060910] border-t border-outline-variant/20 shadow-[0_-4px_20px_rgba(0,0,0,0.6)] z-40">
+<div class="w-full max-w-[1600px] mx-auto px-4 lg:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5 text-xs text-on-surface-variant font-label-caps">
+<span class="material-symbols-outlined text-primary text-[16px]">cloud_done</span>
+<span>NOIR CAPACITY SAAS • SALA EXCLUSIVA VIP</span>
+</div>
+<span class="text-outline-variant/40 hidden sm:inline">•</span>
+<span class="font-label-caps text-xs text-on-surface-variant hidden sm:inline">CONTROL ESTRICTO 18+</span>
+</div>
+<div class="flex flex-wrap items-center gap-4 text-xs font-label-caps text-on-surface-variant">
+<span class="flex items-center gap-1.5"><kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-mono text-[10px]">[+] / [↑]</kbd> Entrada</span>
+<span class="flex items-center gap-1.5"><kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-mono text-[10px]">[-] / [↓]</kbd> Salida</span>
+<span class="flex items-center gap-1.5"><kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-mono text-[10px]">[TAB]</kbd> Cambiar Género</span>
+</div>
+</div>
+</footer>
+<!-- Sound Audio Synthesizer (No external asset dependency) -->
+<script>
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function playBeep(freq = 600, duration = 0.08, type = 'sine') {
+      if (!soundEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.warn("Audio non-critical error", e);
+      }
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      const icon = document.getElementById('sound-icon');
+      const btn = document.getElementById('btn-toggle-sound');
+      if (soundEnabled) {
+        icon.innerText = 'volume_up';
+        btn.classList.add('text-primary');
+        btn.classList.remove('text-on-surface-variant');
+        showToast('Feedback sonoro activado', 'info');
+      } else {
+        icon.innerText = 'volume_off';
+        btn.classList.remove('text-primary');
+        btn.classList.add('text-on-surface-variant');
+        showToast('Feedback sonoro silenciado', 'info');
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+  </script>
+<!-- Complete Application State & Interactive Logic -->
+<script>
+    // State dedicated purely to Noir Club
+    const NOIR_CLUB_STATE = {
+      maxCapacity: 250,
+      categories: {
+        hombre: 0,
+        mujer: 0
+      },
+      totalEntries: 0,
+      totalExits: 0,
+      logs: []
+    };
+
+    let selectedGender = 'hombre'; // strictly 'hombre' or 'mujer'
+    let isAgeVerified = false;
+
+    // Monthly dataset for 2026
+    const MONTHS_2026 = [
+      { id: 'ene', name: 'Enero', avg: 82, peak: 250, soldOut: 3, total: 6350, ratioM: 51, ratioH: 49, quarter: 'q1', desc: 'Arranque del año marcado por la Gala de Año Nuevo con aforo 100% inmediato.' },
+      { id: 'feb', name: 'Febrero', avg: 88, peak: 250, soldOut: 4, total: 6820, ratioM: 52, ratioH: 48, quarter: 'q1', desc: 'Edición Velvet Valentine y fines de semana con alta rotación nocturna.' },
+      { id: 'mar', name: 'Marzo', avg: 91, peak: 250, soldOut: 4, total: 7100, ratioM: 53, ratioH: 47, quarter: 'q1', desc: 'Comienzo de primavera con aforo sostenido sobre el 90% legal.' },
+      { id: 'abr', name: 'Abril', avg: 86, peak: 250, soldOut: 3, total: 6690, ratioM: 50, ratioH: 50, quarter: 'q2', desc: 'Semana Santa VIP con asistencia equilibrada y cumplimiento íntegro.' },
+      { id: 'may', name: 'Mayo', avg: 94, peak: 250, soldOut: 5, total: 7300, ratioM: 52, ratioH: 48, quarter: 'q2', desc: 'Apertura de terraza lounge exterior y flujo récord de viernes.' },
+      { id: 'jun', name: 'Junio', avg: 98, peak: 250, soldOut: 6, total: 7600, ratioM: 53, ratioH: 47, quarter: 'q2', desc: 'Celebración Summer Solstice White Party con colas perimetrales controladas.' },
+      { id: 'jul', name: 'Julio', avg: 99, peak: 250, soldOut: 8, total: 7850, ratioM: 54, ratioH: 46, quarter: 'q3', desc: 'Temporada alta VIP, residencias de DJs internacionales y rotación contínua.' },
+      { id: 'ago', name: 'Agosto', avg: 100, peak: 250, soldOut: 9, total: 7750, ratioM: 54, ratioH: 46, quarter: 'q3', desc: 'Mes estival cumbre con 9 noches Sold Out completas e inspecciones superadas con éxito.' },
+      { id: 'sep', name: 'Septiembre', avg: 92, peak: 250, soldOut: 3, total: 7120, ratioM: 51, ratioH: 49, quarter: 'q3', desc: 'Cierre de temporada de verano con alta fidelidad de socios y socias.' },
+      { id: 'oct', name: 'Octubre', avg: 95, peak: 250, soldOut: 4, total: 7390, ratioM: 51, ratioH: 49, quarter: 'q4', desc: 'Noir Halloween Masquerade llenó el aforo total en menos de 65 minutos.' },
+      { id: 'nov', name: 'Noviembre', avg: 89, peak: 250, soldOut: 2, total: 6950, ratioM: 50, ratioH: 50, quarter: 'q4', desc: 'Mes templado con control biométrico y sesiones privadas de etiqueta.' },
+      { id: 'dic', name: 'Diciembre', avg: 97, peak: 250, soldOut: 7, total: 7500, ratioM: 53, ratioH: 47, quarter: 'q4', desc: 'Gala de Nochevieja 2026 y festividades con máxima afluencia acreditada.' }
+    ];
+
+    let currentSelectedMonthId = 'ago';
+
+    // Local Storage
+    function loadSavedState() {
+      const saved = localStorage.getItem('noir_club_vip_state');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          NOIR_CLUB_STATE.maxCapacity = parsed.maxCapacity || 250;
+          NOIR_CLUB_STATE.categories.hombre = parsed.categories?.hombre || 0;
+          NOIR_CLUB_STATE.categories.mujer = parsed.categories?.mujer || 0;
+          NOIR_CLUB_STATE.totalEntries = parsed.totalEntries || 0;
+          NOIR_CLUB_STATE.totalExits = parsed.totalExits || 0;
+          NOIR_CLUB_STATE.logs = parsed.logs || [];
+        } catch (e) {
+          console.error("Storage error", e);
+        }
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem('noir_club_vip_state', JSON.stringify(NOIR_CLUB_STATE));
+    }
+
+    // Toast feedback helper
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      let bg = 'bg-surface-container-high text-on-surface border-outline-variant/30';
+      let icon = 'info';
+      if (type === 'success') { bg = 'bg-emerald-950/90 text-emerald-200 border-emerald-700/50'; icon = 'check_circle'; }
+      if (type === 'warning') { bg = 'bg-amber-950/90 text-amber-200 border-amber-700/50'; icon = 'warning'; }
+      if (type === 'error') { bg = 'bg-error-container text-on-error-container border-error/50'; icon = 'error'; }
+
+      toast.className = `${bg} px-4 py-3 rounded-xl border shadow-2xl flex items-center gap-2.5 font-label-md text-xs pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0`;
+      toast.innerHTML = `<span class="material-symbols-outlined text-[18px]">${icon}</span><span>${message}</span>`;
+      
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Switch between Main Tabs: Live Panel vs 2026 Annual History
+    function switchMainTab(tab) {
+      const liveSection = document.getElementById('section-live-panel');
+      const histSection = document.getElementById('section-history-2026');
+      const btnLive = document.getElementById('nav-btn-live');
+      const btnHist = document.getElementById('nav-btn-history');
+      const mLive = document.getElementById('mobile-nav-live');
+      const mHist = document.getElementById('mobile-nav-history');
+
+      if (tab === 'live') {
+        liveSection.classList.remove('hidden');
+        histSection.classList.add('hidden');
+
+        btnLive.className = 'px-5 py-2 rounded-lg font-label-caps text-[12px] uppercase tracking-wider font-semibold transition-all bg-primary text-on-primary shadow-[0_0_15px_rgba(243,211,146,0.3)]';
+        btnHist.className = 'px-5 py-2 rounded-lg font-label-caps text-[12px] uppercase tracking-wider font-semibold transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60';
+        
+        mLive.className = 'flex-1 py-1.5 rounded-md font-label-caps text-[11px] uppercase tracking-wider font-semibold text-center bg-primary text-on-primary';
+        mHist.className = 'flex-1 py-1.5 rounded-md font-label-caps text-[11px] uppercase tracking-wider font-semibold text-center text-on-surface-variant bg-surface-container-high';
+      } else {
+        liveSection.classList.add('hidden');
+        histSection.classList.remove('hidden');
+
+        btnHist.className = 'px-5 py-2 rounded-lg font-label-caps text-[12px] uppercase tracking-wider font-semibold transition-all bg-primary text-on-primary shadow-[0_0_15px_rgba(243,211,146,0.3)]';
+        btnLive.className = 'px-5 py-2 rounded-lg font-label-caps text-[12px] uppercase tracking-wider font-semibold transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60';
+
+        mHist.className = 'flex-1 py-1.5 rounded-md font-label-caps text-[11px] uppercase tracking-wider font-semibold text-center bg-primary text-on-primary';
+        mLive.className = 'flex-1 py-1.5 rounded-md font-label-caps text-[11px] uppercase tracking-wider font-semibold text-center text-on-surface-variant bg-surface-container-high';
+        
+        renderMonthlyBars();
+      }
+    }
+
+    function getCurrentCount() {
+      return (NOIR_CLUB_STATE.categories.hombre || 0) + (NOIR_CLUB_STATE.categories.mujer || 0);
+    }
+
+    function updateMaxCapacity() {
+      const val = parseInt(document.getElementById('input-max-capacity').value, 10);
+      if (isNaN(val) || val <= 0) {
+        showToast('El aforo máximo debe ser mayor que 0', 'error');
+        return;
+      }
+      const count = getCurrentCount();
+      if (val < count) {
+        showToast(`No puede establecer un aforo menor a la ocupación actual (${count} personas)`, 'warning');
+        return;
+      }
+      NOIR_CLUB_STATE.maxCapacity = val;
+      saveState();
+      renderAll();
+      showToast(`Aforo máximo actualizado a ${val} plazas VIP`, 'success');
+      playBeep(750, 0.1);
+    }
+
+    function toggleAgeVerification(checked) {
+      isAgeVerified = checked;
+      const count = getCurrentCount();
+      const max = NOIR_CLUB_STATE.maxCapacity;
+      const btnEntry = document.getElementById('btn-club-entry');
+      const notice = document.getElementById('club-lock-notice');
+
+      if (checked && count < max) {
+        btnEntry.disabled = false;
+        btnEntry.classList.remove('opacity-40', 'cursor-not-allowed');
+        notice.classList.add('hidden');
+        playBeep(520, 0.05);
+      } else {
+        btnEntry.disabled = true;
+        btnEntry.classList.add('opacity-40', 'cursor-not-allowed');
+        notice.classList.remove('hidden');
+      }
+    }
+
+    // Select Gender: Strictly 'hombre' or 'mujer'
+    function selectGender(gender) {
+      selectedGender = gender;
+      const cardH = document.getElementById('cat-card-hombre');
+      const cardM = document.getElementById('cat-card-mujer');
+      const lblM = document.getElementById('label-mujer');
+      const iconM = document.getElementById('icon-mujer');
+
+      if (gender === 'hombre') {
+        cardH.className = 'p-5 rounded-xl border transition-all text-left flex flex-col gap-2 relative overflow-hidden bg-primary-container/20 border-primary shadow-[0_0_15px_rgba(214,183,121,0.2)]';
+        cardM.className = 'p-5 rounded-xl border transition-all text-left flex flex-col gap-2 relative overflow-hidden bg-surface-container-high/60 border-outline-variant/30 hover:border-outline-variant/60';
+        lblM.className = 'font-label-caps text-xs md:text-sm uppercase tracking-wider font-bold text-on-surface-variant';
+        iconM.className = 'material-symbols-outlined text-on-surface-variant text-[24px]';
+      } else {
+        cardM.className = 'p-5 rounded-xl border transition-all text-left flex flex-col gap-2 relative overflow-hidden bg-emerald-950/30 border-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.2)]';
+        lblM.className = 'font-label-caps text-xs md:text-sm uppercase tracking-wider font-bold text-emerald-400';
+        iconM.className = 'material-symbols-outlined text-emerald-400 text-[24px]';
+
+        cardH.className = 'p-5 rounded-xl border transition-all text-left flex flex-col gap-2 relative overflow-hidden bg-surface-container-high/60 border-outline-variant/30 hover:border-outline-variant/60';
+      }
+
+      checkExitButtonState();
+      playBeep(440, 0.04);
+    }
+
+    function checkExitButtonState() {
+      const btnExit = document.getElementById('btn-club-exit');
+      const countInCurrentGender = NOIR_CLUB_STATE.categories[selectedGender] || 0;
+      if (countInCurrentGender > 0) {
+        btnExit.disabled = false;
+        btnExit.classList.remove('opacity-40', 'cursor-not-allowed');
+      } else {
+        btnExit.disabled = true;
+        btnExit.classList.add('opacity-40', 'cursor-not-allowed');
+      }
+    }
+
+    // Handle Entry (+1)
+    function handleClubEntry() {
+      const count = getCurrentCount();
+      const max = NOIR_CLUB_STATE.maxCapacity;
+
+      if (!isAgeVerified) {
+        showToast('ACCESO DENEGADO: Verificación 18+ obligatoria', 'error');
+        playBeep(220, 0.2, 'sawtooth');
+        return;
+      }
+
+      if (count >= max) {
+        showToast('AFORO COMPLETO (100%): Acceso restringido por normativa legal.', 'error');
+        playBeep(200, 0.25, 'square');
+        return;
+      }
+
+      NOIR_CLUB_STATE.categories[selectedGender]++;
+      NOIR_CLUB_STATE.totalEntries++;
+      addAuditLog('ENTRADA', `Acceso VIP 18+ [${selectedGender.toUpperCase()}]`);
+      saveState();
+      renderAll();
+      showToast(`Entrada autorizada: ${selectedGender.toUpperCase()}`, 'success');
+      playBeep(880, 0.08);
+
+      const newCount = count + 1;
+      const pct = (newCount / max) * 100;
+      if (pct >= 100) {
+        showToast('¡ALERTA CRÍTICA: Sala al 100% de capacidad legal!', 'error');
+        playBeep(180, 0.4, 'sawtooth');
+      } else if (pct >= 80) {
+        showToast('Atención de aforo: Ocupación superior al 80%', 'warning');
+      }
+    }
+
+    // Handle Exit (-1) with strict decrement validation
+    function handleClubExit() {
+      const currentInCat = NOIR_CLUB_STATE.categories[selectedGender] || 0;
+      if (currentInCat <= 0) {
+        showToast(`Imposible decrementar: 0 ${selectedGender.toUpperCase()}S registrados en sala.`, 'error');
+        playBeep(220, 0.15, 'sawtooth');
+        return;
+      }
+
+      NOIR_CLUB_STATE.categories[selectedGender]--;
+      NOIR_CLUB_STATE.totalExits++;
+      addAuditLog('SALIDA', `Salida sala [${selectedGender.toUpperCase()}]`);
+      saveState();
+      renderAll();
+      showToast(`Salida registrada: ${selectedGender.toUpperCase()}`, 'info');
+      playBeep(520, 0.08);
+    }
+
+    // Audit Log system
+    function addAuditLog(type, detail) {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const entry = {
+        type,
+        detail,
+        time: timeStr,
+        venue: 'NOIR CLUB EXCLUSIVE',
+        operator: 'OP_VIP_MASTER',
+        timestamp: now.toISOString()
+      };
+      NOIR_CLUB_STATE.logs.unshift(entry);
+      if (NOIR_CLUB_STATE.logs.length > 50) {
+        NOIR_CLUB_STATE.logs.pop();
+      }
+    }
+
+    function exportHistoryCSV() {
+      if (NOIR_CLUB_STATE.logs.length === 0) {
+        showToast('No existen registros de auditoría en la sesión actual.', 'warning');
+        return;
+      }
+
+      let csv = 'Timestamp,Hora,Tipo,Detalle,Establecimiento,Operador\r\n';
+      NOIR_CLUB_STATE.logs.forEach(row => {
+        csv += `"${row.timestamp}","${row.time}","${row.type}","${row.detail}","${row.venue}","${row.operator}"\r\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `noir_club_auditoria_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Descarga de auditoría iniciada en CSV', 'success');
+    }
+
+    function exportAnnualReportCSV() {
+      let csv = 'Mes,Nombre,Ocupacion_Media_Pct,Pico_Aforo,Noches_Sold_Out,Total_Asistentes,Ratio_Mujeres_Pct,Ratio_Hombres_Pct,Descripcion\r\n';
+      MONTHS_2026.forEach(m => {
+        csv += `"${m.id.toUpperCase()}","${m.name}",${m.avg},${m.peak},${m.soldOut},${m.total},${m.ratioM},${m.ratioH},"${m.desc}"\r\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `noir_club_informe_anual_2026.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Informe consolidado 2026 exportado a CSV', 'success');
+    }
+
+    function simulatePdfReport() {
+      showToast('Generando informe anual certificado 2026 (PDF Oficial)...', 'info');
+      setTimeout(() => {
+        showToast('Informe 2026 listo. Iniciando diálogo de impresión/descarga.', 'success');
+        window.print();
+      }, 1000);
+    }
+
+    // Modal Reset Confirmation
+    function openResetModal() {
+      document.getElementById('reset-modal').classList.remove('hidden');
+      document.getElementById('reset-modal').classList.add('flex');
+    }
+
+    function closeResetModal() {
+      document.getElementById('reset-modal').classList.add('hidden');
+      document.getElementById('reset-modal').classList.remove('flex');
+    }
+
+    function confirmResetCapacity() {
+      NOIR_CLUB_STATE.categories.hombre = 0;
+      NOIR_CLUB_STATE.categories.mujer = 0;
+      NOIR_CLUB_STATE.totalEntries = 0;
+      NOIR_CLUB_STATE.totalExits = 0;
+      addAuditLog('REINICIO', 'Vaciado total de sala y reinicio a 0');
+      saveState();
+      closeResetModal();
+      renderAll();
+      showToast('Sala vaciada. Contador reestablecido a 0 personas.', 'success');
+      playBeep(350, 0.2);
+    }
+
+    // Master Render Function
+    function renderAll() {
+      const count = getCurrentCount();
+      const max = NOIR_CLUB_STATE.maxCapacity;
+      const pct = max > 0 ? (count / max) * 100 : 0;
+      const available = Math.max(0, max - count);
+
+      // Strict Dynamic Grammar (Condition 3)
+      let grammarStr = '0 PERSONAS';
+      if (count === 1) {
+        grammarStr = '1 PERSONA';
+      } else {
+        grammarStr = `${count} PERSONAS`;
+      }
+
+      document.getElementById('metric-main-count').innerText = count;
+      document.getElementById('metric-main-grammar').innerText = grammarStr;
+      document.getElementById('metric-percent-inline').innerText = `${pct.toFixed(1)}%`;
+      document.getElementById('metric-max-display').innerText = max;
+      document.getElementById('metric-free-slots').innerText = available;
+      document.getElementById('metric-limit-slots').innerText = max;
+
+      // Status HUD and colors
+      const progressBar = document.getElementById('metric-progress-bar');
+      const badge = document.getElementById('occupancy-status-badge');
+      const dot = document.getElementById('occupancy-indicator-dot');
+      const kpiPercent = document.getElementById('kpi-occupancy-percent');
+      const kpiStatus = document.getElementById('kpi-status-quick');
+      const headerDot = document.getElementById('header-status-dot');
+      const headerText = document.getElementById('header-status-text');
+
+      progressBar.style.width = `${Math.min(100, pct)}%`;
+      kpiPercent.innerText = `${pct.toFixed(1)}%`;
+
+      if (pct < 80) {
+        badge.className = 'px-3 py-1 rounded-full font-label-caps text-[11px] uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-800/40 font-semibold tracking-wider';
+        badge.innerText = 'AFORO DISPONIBLE (<80%)';
+        dot.className = 'w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.9)] animate-pulse';
+        progressBar.className = 'h-full rounded-full transition-all duration-500 bg-emerald-500';
+        kpiStatus.innerHTML = '<span class="material-symbols-outlined text-[16px]">check_circle</span><span>Acceso habilitado</span>';
+        kpiStatus.className = 'flex items-center gap-1 text-emerald-400 font-label-md text-xs font-medium';
+        headerDot.className = 'w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]';
+        headerText.innerText = '<80% ÓPTIMO';
+      } else if (pct < 100) {
+        badge.className = 'px-3 py-1 rounded-full font-label-caps text-[11px] uppercase bg-amber-950/60 text-amber-400 border border-amber-800/40 font-semibold tracking-wider';
+        badge.innerText = 'OCUPACIÓN ELEVADA (80%-99%)';
+        dot.className = 'w-3 h-3 rounded-full bg-amber-500 shadow-[0_0_12px_rgba(245,158,11,0.9)] animate-pulse';
+        progressBar.className = 'h-full rounded-full transition-all duration-500 bg-amber-500';
+        kpiStatus.innerHTML = '<span class="material-symbols-outlined text-[16px]">warning</span><span>Precaución umbral alto</span>';
+        kpiStatus.className = 'flex items-center gap-1 text-amber-400 font-label-md text-xs font-medium';
+        headerDot.className = 'w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.7)]';
+        headerText.innerText = '80%-99% ALTO';
+      } else {
+        badge.className = 'px-3 py-1 rounded-full font-label-caps text-[11px] uppercase bg-error-container text-on-error-container border border-error/50 font-bold tracking-wider';
+        badge.innerText = 'AFORO COMPLETO (100%)';
+        dot.className = 'w-3 h-3 rounded-full bg-error shadow-[0_0_12px_rgba(239,68,68,1)] animate-ping';
+        progressBar.className = 'h-full rounded-full transition-all duration-500 bg-error shadow-[0_0_10px_#ef4444]';
+        kpiStatus.innerHTML = '<span class="material-symbols-outlined text-[16px]">block</span><span>Entrada restringida</span>';
+        kpiStatus.className = 'flex items-center gap-1 text-error font-label-md text-xs font-medium';
+        headerDot.className = 'w-2 h-2 rounded-full bg-error shadow-[0_0_8px_rgba(239,68,68,0.9)]';
+        headerText.innerText = '100% LLENO';
+      }
+
+      // Micro KPIs
+      document.getElementById('kpi-available-slots').innerText = available;
+      document.getElementById('kpi-total-entries').innerText = NOIR_CLUB_STATE.totalEntries;
+      document.getElementById('kpi-total-exits').innerText = NOIR_CLUB_STATE.totalExits;
+
+      // Category counts (Only Hombre & Mujer)
+      const hCount = NOIR_CLUB_STATE.categories.hombre || 0;
+      const mCount = NOIR_CLUB_STATE.categories.mujer || 0;
+      document.getElementById('count-gender-hombre').innerText = hCount;
+      document.getElementById('count-gender-mujer').innerText = mCount;
+
+      // Card sub ratio bars
+      const hRatio = count > 0 ? (hCount / count) * 100 : 50;
+      const mRatio = count > 0 ? (mCount / count) * 100 : 50;
+      document.getElementById('ratio-bar-hombre').style.width = `${hRatio}%`;
+      document.getElementById('ratio-bar-mujer').style.width = `${mRatio}%`;
+
+      // Entry button availability
+      const btnEntry = document.getElementById('btn-club-entry');
+      const notice = document.getElementById('club-lock-notice');
+      if (isAgeVerified && count < max) {
+        btnEntry.disabled = false;
+        btnEntry.classList.remove('opacity-40', 'cursor-not-allowed');
+        notice.classList.add('hidden');
+      } else {
+        btnEntry.disabled = true;
+        btnEntry.classList.add('opacity-40', 'cursor-not-allowed');
+        notice.classList.remove('hidden');
+      }
+
+      // Exit button validation
+      checkExitButtonState();
+
+      // Render Logs
+      const logBody = document.getElementById('audit-log-tbody');
+      const emptyMsg = document.getElementById('audit-empty-message');
+      logBody.innerHTML = '';
+      if (NOIR_CLUB_STATE.logs.length === 0) {
+        emptyMsg.classList.remove('hidden');
+      } else {
+        emptyMsg.classList.add('hidden');
+        NOIR_CLUB_STATE.logs.slice(0, 10).forEach(log => {
+          const row = document.createElement('tr');
+          const isEntry = log.type === 'ENTRADA';
+          const isExit = log.type === 'SALIDA';
+          let badgeColor = 'bg-surface-bright text-on-surface';
+          if (isEntry) badgeColor = 'bg-emerald-950/80 text-emerald-400 border border-emerald-800/40';
+          if (isExit) badgeColor = 'bg-amber-950/80 text-amber-400 border border-amber-800/40';
+          if (log.type === 'REINICIO') badgeColor = 'bg-error-container text-on-error-container border border-error/40';
+
+          row.className = 'hover:bg-surface-container-high/30 transition-colors';
+          row.innerHTML = `
+            <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-semibold font-label-caps uppercase ${badgeColor}">${log.type}</span></td>
+            <td class="py-2.5 px-3 font-mono text-xs text-on-surface">${log.detail}</td>
+            <td class="py-2.5 px-3 text-right font-mono text-[11px] text-on-surface-variant">${log.time}</td>
+          `;
+          logBody.appendChild(row);
+        });
+      }
+
+      // Demographic Donut
+      renderDemographicDonut(count, hCount, mCount);
+    }
+
+    function renderDemographicDonut(total, hombres, mujeres) {
+      document.getElementById('donut-center-total').innerText = total;
+
+      const circumference = 2 * Math.PI * 40; // ~251.32
+      const s1 = document.getElementById('donut-slice-hombre');
+      const s2 = document.getElementById('donut-slice-mujer');
+
+      if (total === 0) {
+        s1.setAttribute('stroke-dasharray', `0 ${circumference}`);
+        s2.setAttribute('stroke-dasharray', `0 ${circumference}`);
+        document.getElementById('legend-hombre-pct').innerText = '50%';
+        document.getElementById('legend-mujer-pct').innerText = '50%';
+      } else {
+        const len1 = (hombres / total) * circumference;
+        const len2 = (mujeres / total) * circumference;
+
+        s1.setAttribute('stroke-dasharray', `${len1} ${circumference}`);
+        s1.setAttribute('stroke-dashoffset', '0');
+
+        s2.setAttribute('stroke-dasharray', `${len2} ${circumference}`);
+        s2.setAttribute('stroke-dashoffset', `-${len1}`);
+
+        const pctH = Math.round((hombres / total) * 100);
+        const pctM = Math.round((mujeres / total) * 100);
+        document.getElementById('legend-hombre-pct').innerText = `${pctH}%`;
+        document.getElementById('legend-mujer-pct').innerText = `${pctM}%`;
+      }
+    }
+
+    // ================= 2026 Historical Capacity Chart Logic =================
+    let currentQuarterFilter = 'all';
+
+    function filterQuarter(q) {
+      currentQuarterFilter = q;
+      ['all', 'q1', 'q2', 'q3', 'q4'].forEach(id => {
+        const btn = document.getElementById('qtr-btn-' + id);
+        if (id === q) {
+          btn.className = 'px-3 py-1 rounded-lg font-label-caps text-xs uppercase font-semibold bg-primary text-on-primary';
+        } else {
+          btn.className = 'px-3 py-1 rounded-lg font-label-caps text-xs uppercase font-semibold text-on-surface-variant hover:text-on-surface';
+        }
+      });
+      renderMonthlyBars();
+    }
+
+    function renderMonthlyBars() {
+      const container = document.getElementById('monthly-bars-container');
+      container.innerHTML = '';
+
+      const filtered = MONTHS_2026.filter(m => {
+        if (currentQuarterFilter === 'all') return true;
+        return m.quarter === currentQuarterFilter;
+      });
+
+      filtered.forEach(m => {
+        const isSelected = m.id === currentSelectedMonthId;
+        const col = document.createElement('div');
+        col.className = 'flex-1 h-full flex flex-col items-center justify-end gap-2 group cursor-pointer';
+        col.onclick = () => selectMonthSpotlight(m.id);
+
+        const barHeight = Math.max(15, (m.avg / 100) * 180);
+        let barColor = 'bg-primary/80 group-hover:bg-primary';
+        if (m.avg >= 98) barColor = 'bg-error/80 group-hover:bg-error';
+        else if (m.avg >= 90) barColor = 'bg-amber-400/80 group-hover:bg-amber-400';
+
+        if (isSelected) {
+          barColor = 'bg-primary ring-2 ring-primary shadow-[0_0_15px_rgba(243,211,146,0.6)]';
+        }
+
+        col.innerHTML = `
+          <div class="font-mono text-[10px] text-on-surface-variant ${isSelected ? 'text-primary font-bold' : ''}">${m.avg}%</div>
+          <div class="w-full max-w-[42px] ${barColor} rounded-t-lg transition-all duration-300" style="height: ${barHeight}px"></div>
+          <span class="font-label-caps text-[11px] uppercase ${isSelected ? 'text-primary font-bold' : 'text-on-surface-variant'}">${m.id}</span>
+        `;
+        container.appendChild(col);
+      });
+
+      updateMonthSpotlight();
+    }
+
+    function selectMonthSpotlight(id) {
+      currentSelectedMonthId = id;
+      renderMonthlyBars();
+      playBeep(600, 0.05);
+    }
+
+    function updateMonthSpotlight() {
+      const m = MONTHS_2026.find(x => x.id === currentSelectedMonthId) || MONTHS_2026[7];
+      document.getElementById('spotlight-month-abbr').innerText = m.id.toUpperCase();
+      document.getElementById('spotlight-month-title').innerText = `${m.name} 2026 — Balance de Aforo Noir Club`;
+      document.getElementById('spotlight-month-desc').innerText = m.desc;
+      document.getElementById('spotlight-month-pct').innerText = `${m.avg}.0%`;
+      document.getElementById('spotlight-month-soldout').innerText = `${m.soldOut} noches`;
+      document.getElementById('spotlight-month-ratio').innerText = `${m.ratioM}% / ${m.ratioH}%`;
+      document.getElementById('spotlight-month-total').innerText = m.total.toLocaleString();
+    }
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (document.activeElement.tagName === 'INPUT') return;
+
+      if (e.key === '+' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        handleClubEntry();
+      } else if (e.key === '-' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        handleClubExit();
+      } else if (e.key === 'Tab') {
+        e.preventDefault();
+        selectGender(selectedGender === 'hombre' ? 'mujer' : 'hombre');
+      }
+    });
+
+    // Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      loadSavedState();
+      selectGender('hombre');
+      document.getElementById('input-max-capacity').value = NOIR_CLUB_STATE.maxCapacity;
+      renderAll();
+      renderMonthlyBars();
+    });
+  </script>
+</body></html>
