@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Desarrollo de FokusMove — Caso de Estudio Multi-IA | 2º DAM</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Cormorant Garamond (Estilo Alta Relojería) & Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Montserrat:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Montserrat"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            skyIce: {
+              50: '#F5F9FD',
+              100: '#EBF3FA',
+              200: '#DCE8F5',
+              300: '#C4DAEE',
+              400: '#9BBFE3',
+            },
+            swiss: {
+              navy: '#16263E',
+              navyLight: '#233B5E',
+              gold: '#C5A059',
+              goldDark: '#9A7835',
+              goldLight: '#EAD7AC',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Fondo principal azul claro luminoso estilo esfera Ice Blue */
+    body {
+      background: radial-gradient(circle at 15% 10%, #F4F9FE 0%, #E6F0FA 45%, #D7E6F5 100%);
+      color: #1E293B;
+    }
+
+    /* Tarjetas translúcidas de alto contraste sobre fondo azul claro */
+    .luxury-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 12px 32px -6px rgba(22, 38, 62, 0.08), 0 2px 6px -1px rgba(22, 38, 62, 0.04);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .luxury-card:hover {
+      box-shadow: 0 20px 40px -8px rgba(22, 38, 62, 0.13);
+    }
+
+    /* Bisel acanalado decorativo para miniaturas de reloj */
+    .mini-fluted-bezel {
+      background: repeating-conic-gradient(
+        from 0deg,
+        #f6f0de 0deg 4deg,
+        #cfa95c 4deg 8deg,
+        #8f6e2e 8deg 12deg,
+        #cfa95c 12deg 16deg
+      );
+    }
+
+    /* Línea conectora vertical del timeline */
+    .timeline-line {
+      background: linear-gradient(to bottom, #C5A059 0%, #9BBFE3 50%, #16263E 100%);
+    }
+
+    /* Animación de entrada suave */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Contenedor de captura con efecto zoom */
+    .mockup-frame {
+      cursor: zoom-in;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .mockup-frame:hover {
+      transform: scale(1.015);
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans antialiased selection:bg-swiss-gold selection:text-white">
+
+  <!-- BARRA DE NAVEGACIÓN SUPERIOR -->
+  <nav class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-skyIce-300/80 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+      <a href="#inicio" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-full bg-swiss-navy flex items-center justify-center text-swiss-gold border border-swiss-gold shadow-sm group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-crown text-sm"></i>
+        </div>
+        <div>
+          <span class="font-serif text-xl font-bold tracking-wider text-swiss-navy uppercase block leading-none">FokusMove</span>
+          <span class="text-[10px] font-semibold tracking-widest text-swiss-goldDark uppercase">Memoria Técnica • 2º DAM</span>
+        </div>
+      </a>
+
+      <!-- Índice rápido de pasos -->
+      <div class="hidden md:flex items-center gap-5 text-xs font-semibold text-slate-600">
+        <a href="#paso-1" class="hover:text-swiss-navy transition">1. Prompt Base</a>
+        <a href="#paso-2" class="hover:text-swiss-navy transition">2. ChatGPT</a>
+        <a href="#paso-3" class="hover:text-swiss-navy transition">3. Gemini</a>
+        <a href="#paso-4" class="hover:text-swiss-navy transition">4. Google Stitch</a>
+        <a href="#paso-5" class="hover:text-swiss-navy transition">5. Conclusión</a>
+      </div>
+
+      <!-- Enlace directo al producto final -->
+      <a href="https://francorv01-cyber.github.io/2-DAM---Desarrollo-de-Interfaces/pomodoro.html?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" class="text-xs font-bold px-4 py-2 rounded-full bg-swiss-navy text-white hover:bg-swiss-navyLight transition shadow-md flex items-center gap-2 border border-swiss-gold/40">
+        <i class="fa-solid fa-arrow-up-right-from-square text-swiss-gold"></i>
+        <span>Abrir App Final</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO / CABECERA DEL CASO DE ESTUDIO -->
+  <header id="inicio" class="max-w-6xl mx-auto px-4 sm:px-6 pt-10 pb-12">
+    <div class="luxury-card rounded-3xl p-7 sm:p-10 md:p-12 relative overflow-hidden">
+      <!-- Decoración geométrica sutil -->
+      <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-skyIce-200/70 blur-2xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-56 h-56 rounded-full bg-swiss-gold/10 blur-2xl pointer-events-none"></div>
+
+      <div class="relative z-10 max-w-4xl">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-skyIce-100 border border-skyIce-300 text-swiss-navy text-xs font-bold tracking-wider uppercase mb-4">
+          <i class="fa-solid fa-layer-group text-swiss-goldDark"></i>
+          <span>Documentación de Proceso • Orquestación Multi-IA</span>
+        </div>
+
+        <h1 class="font-serif text-3xl sm:text-5xl font-bold text-swiss-navy leading-tight tracking-tight">
+          Desarrollo de <span class="text-swiss-goldDark">FokusMove</span>: Caso de Estudio Multi-IA
+        </h1>
+
+        <p class="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
+          De la conceptualización inspirada en la alta relojería suiza al despliegue web en producción mediante la colaboración iterativa entre <strong class="text-swiss-navy font-semibold">ChatGPT</strong>, <strong class="text-swiss-navy font-semibold">Google Gemini</strong> y <strong class="text-swiss-navy font-semibold">Google Stitch</strong>.
+        </p>
+
+        <!-- Badges de Metadatos del Alumno -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-7">
+          <div class="bg-skyIce-50 border border-skyIce-200 rounded-2xl p-3.5 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-white border border-skyIce-300 flex items-center justify-center text-swiss-navy shadow-sm">
+              <i class="fa-solid fa-user-graduate"></i>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Autor del Proyecto</span>
+              <span class="text-sm font-bold text-swiss-navy">Franco Rodríguez Vargas</span>
+            </div>
+          </div>
+
+          <div class="bg-skyIce-50 border border-skyIce-200 rounded-2xl p-3.5 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-white border border-skyIce-300 flex items-center justify-center text-swiss-goldDark shadow-sm">
+              <i class="fa-solid fa-laptop-code"></i>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Ciclo Formativo</span>
+              <span class="text-sm font-bold text-swiss-navy">2º Grado Superior DAM</span>
+            </div>
+          </div>
+
+          <div class="bg-skyIce-50 border border-skyIce-200 rounded-2xl p-3.5 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-white border border-skyIce-300 flex items-center justify-center text-swiss-navy shadow-sm">
+              <i class="fa-solid fa-pen-ruler"></i>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Módulo Profesional</span>
+              <span class="text-sm font-bold text-swiss-navy">Desarrollo de Interfaces</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones de Acción Principales -->
+        <div class="flex flex-wrap items-center gap-4 mt-8 pt-6 border-t border-skyIce-200">
+          <a href="https://francorv01-cyber.github.io/2-DAM---Desarrollo-de-Interfaces/pomodoro.html?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl bg-swiss-navy hover:bg-swiss-navyLight text-white font-semibold text-sm shadow-lg shadow-swiss-navy/20 transition flex items-center gap-2.5">
+            <i class="fa-solid fa-globe text-swiss-gold"></i>
+            <span>Probar Web Final (GitHub Pages)</span>
+          </a>
+
+          <a href="https://stitch.google.com/projects/6538070911193685424" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl bg-white hover:bg-skyIce-50 text-swiss-navy border border-skyIce-300 font-semibold text-sm shadow-sm transition flex items-center gap-2.5">
+            <i class="fa-solid fa-wand-magic-sparkles text-swiss-goldDark"></i>
+            <span>Ver Prototipos en Google Stitch</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL DEL PASO A PASO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20 relative">
+    <!-- Línea vertical guía en escritorio -->
+    <div class="hidden lg:block absolute left-10 top-6 bottom-24 w-0.5 timeline-line opacity-50"></div>
+
+    <div class="space-y-12">
+
+      <!-- =====================================================================
+           PASO 1: CONCEPCIÓN DEL PROYECTO Y PROMPT INICIAL
+           ===================================================================== -->
+      <section id="paso-1" class="reveal relative lg:pl-16">
+        <!-- Indicador numérico -->
+        <div class="hidden lg:flex absolute left-4 top-6 w-12 h-12 rounded-full bg-swiss-navy text-swiss-gold font-serif font-bold text-xl items-center justify-center border-4 border-skyIce-100 shadow-md z-10">
+          01
+        </div>
+
+        <div class="luxury-card rounded-3xl p-6 sm:p-8">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-skyIce-200 pb-4 mb-5">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-widest text-swiss-goldDark">Fase 1 • Definición de Requisitos</span>
+              <h2 class="font-serif text-2xl sm:text-3xl font-bold text-swiss-navy mt-0.5">Concepción del Proyecto y Prompt Inicial</h2>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-skyIce-100 text-swiss-navy text-xs font-semibold border border-skyIce-300">
+              <i class="fa-solid fa-bullseye mr-1 text-swiss-goldDark"></i> Arquitectura Base
+            </span>
+          </div>
+
+          <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+            El objetivo inicial fue trascender el clásico temporizador Pomodoro minimalista para diseñar un producto digital completo orientado al rendimiento académico en <strong>2º de DAM</strong>. Para ello, se redacción un <em>prompt maestro</em> estructurado en tres pilares: estética de alta relojería suiza (inspirada en la esfera azul y tipografía de un <strong>Rolex Day-Date</strong>), gestión académica (calendario, agenda semanal e informe diario) y activación física programada en cada descanso.
+          </p>
+
+          <!-- Requisitos clave en grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-skyIce-50/90 border border-skyIce-200 rounded-2xl p-4">
+              <h3 class="font-bold text-swiss-navy text-sm flex items-center gap-2 mb-1.5">
+                <i class="fa-solid fa-watch text-swiss-goldDark"></i> Estética Rolex Day-Date
+              </h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Esfera azul con acabado radial, tipografía elegante tipo <em>Helvetica Now / Serif clásico</em> y marca <strong>FokusMove</strong> coronando el dial.
+              </p>
+            </div>
+
+            <div class="bg-skyIce-50/90 border border-skyIce-200 rounded-2xl p-4">
+              <h3 class="font-bold text-swiss-navy text-sm flex items-center gap-2 mb-1.5">
+                <i class="fa-solid fa-dumbbell text-swiss-goldDark"></i> Rutina Física Semanal
+              </h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Descansos de 5 y 15 min vinculados al día real: <strong>Lun</strong> Pecho, <strong>Mar</strong> Bíceps, <strong>Mié</strong> Piernas, <strong>Jue</strong> Tríceps, <strong>Vie</strong> Espalda, <strong>Sáb</strong> Abdomen y <strong>Dom</strong> Comba.
+              </p>
+            </div>
+
+            <div class="bg-skyIce-50/90 border border-skyIce-200 rounded-2xl p-4">
+              <h3 class="font-bold text-swiss-navy text-sm flex items-center gap-2 mb-1.5">
+                <i class="fa-solid fa-music text-swiss-goldDark"></i> Motivación &amp; Analítica
+              </h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Frases motivacionales, ilustraciones de ejercicios, música de las películas de <strong>Rocky</strong> exclusiva para descansos, agenda semanal e informe diario.
+              </p>
+            </div>
+          </div>
+
+          <!-- Bloque desplegable con el Prompt Original -->
+          <div class="border border-skyIce-300 rounded-2xl overflow-hidden bg-slate-900 text-slate-200">
+            <button onclick="togglePromptBox()" class="w-full px-5 py-3.5 flex items-center justify-between text-left bg-swiss-navy hover:bg-swiss-navyLight transition">
+              <span class="text-xs font-bold tracking-wider uppercase text-swiss-goldLight flex items-center gap-2">
+                <i class="fa-solid fa-terminal"></i> Ver Prompt Original Enviado a las IAs
+              </span>
+              <i id="promptChevron" class="fa-solid fa-chevron-down text-xs text-swiss-gold transition-transform duration-300"></i>
+            </button>
+            <div id="promptContent" class="hidden p-5 text-xs font-mono leading-relaxed text-slate-300 bg-slate-950 border-t border-slate-800 space-y-2">
+              <p>"Estudio un grado superior de DAM, necesito que estés a la altura y que superes el nivel para la tarea que quiero que hagas. Haz una página web y un prompt para pedírselo a otra IA y que me haga el mismo trabajo que tú, de Pomodoro...</p>
+              <p>• Un tipo de letra distinto y original, elegante como la que utiliza Rolex.</p>
+              <p>• Que el contador sea el fondo de caja de un Rolex Day-Date fondo azul.</p>
+              <p>• Calendario para saber el día exacto: lunes pecho, martes bíceps, miércoles piernas, jueves tríceps, viernes espalda, sábado abdomen y domingo saltar a la comba (5 min descanso corto, 15 min largo).</p>
+              <p>• Frases motivacionales, imágenes de ejercicios, agenda de tareas pendientes, informe diario de uso y canciones de las películas de Rocky solo para los descansos. Nombre: FokusMove."</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           PASO 2: PRIMERA ITERACIÓN CON CHATGPT
+           ===================================================================== -->
+      <section id="paso-2" class="reveal relative lg:pl-16">
+        <div class="hidden lg:flex absolute left-4 top-6 w-12 h-12 rounded-full bg-swiss-navy text-swiss-gold font-serif font-bold text-xl items-center justify-center border-4 border-skyIce-100 shadow-md z-10">
+          02
+        </div>
+
+        <div class="luxury-card rounded-3xl p-6 sm:p-8">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-skyIce-200 pb-4 mb-5">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-widest text-emerald-700">Fase 2 • Ideación y Estructura Funcional</span>
+              <h2 class="font-serif text-2xl sm:text-3xl font-bold text-swiss-navy mt-0.5">Primera Iteración con ChatGPT</h2>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-200">
+              <i class="fa-solid fa-robot mr-1"></i> ChatGPT (GPT-4)
+            </span>
+          </div>
+
+          <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+            El primer paso práctico consistió en enviar la especificación a <strong>ChatGPT</strong> para conceptualizar la aplicación como un producto real y obtener ideas sobre qué elementos añadir, modificar o descartar. ChatGPT estructuró la propuesta en tres bloques visuales claros (esfera azul con números romanos <em>XII, III, VI, IX</em>, calendario mensual de noviembre de 2026, tarjeta de entrenamiento diario e informe de métricas) y ayudó a refinar un <em>prompt</em> técnico mucho más detallado para las siguientes herramientas.
+          </p>
+
+          <!-- Galería de 2 Capturas de ChatGPT (Fieles al PDF + opción de carga de imagen real) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Captura 2.1: Interfaz ChatGPT + Dial Azul Romano -->
+            <div class="bg-skyIce-50 border border-skyIce-200 rounded-2xl p-4 flex flex-col">
+              <div id="mockup-chatgpt-1" onclick="openLightbox('mockup-chatgpt-1', 'Iteración 1 (ChatGPT): Conceptualización y Dial Azul con Números Romanos')" class="mockup-frame rounded-xl overflow-hidden border border-slate-300 shadow-md bg-white flex-1 flex flex-col">
+                <!-- Barra navegador simulada -->
+                <div class="bg-slate-100 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between text-[10px] text-slate-500">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                    <span class="ml-2 font-mono">chatgpt.com — FokusMove</span>
+                  </div>
+                  <span class="text-swiss-navy font-semibold"><i class="fa-solid fa-expand"></i> Ampliar</span>
+                </div>
+                <!-- Contenido split ChatGPT + Preview -->
+                <div class="grid grid-cols-12 flex-1 min-h-[250px]">
+                  <!-- Columna Chat -->
+                  <div class="col-span-5 bg-white p-3 border-r border-slate-200 flex flex-col justify-between text-[10px] text-slate-700">
+                    <div>
+                      <span class="text-[9px] text-slate-400 font-semibold">Analizado</span>
+                      <p class="font-semibold text-slate-900 mt-1 leading-snug">Voy a plantear <strong>FokusMove</strong> como un producto digital de verdad:</p>
+                      <ul class="mt-2 space-y-1.5 text-[9px] text-slate-600">
+                        <li><strong>1. Relojería de lujo:</strong> Esfera azul Rolex Day-Date y detalles dorados.</li>
+                        <li><strong>2. Productividad:</strong> Calendario, agenda semanal e informes.</li>
+                        <li><strong>3. Disciplina física:</strong> Rutina según el día de la semana.</li>
+                      </ul>
+                    </div>
+                    <div class="mt-2 bg-slate-100 border border-slate-200 rounded-lg p-1.5 text-[9px] text-slate-500 italic">
+                      "haz un prompt mucho más elaborado..."
+                    </div>
+                  </div>
+                  <!-- Columna Preview Oscura -->
+                  <div class="col-span-7 bg-[#0B172A] p-3 flex flex-col items-center justify-between text-white">
+                    <div class="flex gap-1 text-[8px]">
+                      <span class="px-2 py-0.5 rounded bg-sky-900/80 border border-sky-500/40">Enfoque · 25 min</span>
+                      <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">Pausa · 5 min</span>
+                    </div>
+                    <!-- Reloj Azul Romano -->
+                    <div class="w-36 h-36 rounded-full p-1.5 bg-gradient-to-b from-amber-200 via-amber-500 to-amber-700 shadow-lg my-2">
+                      <div class="w-full h-full rounded-full bg-[radial-gradient(circle,#1D4478_0%,#0C1E38_100%)] flex flex-col items-center justify-between p-2.5 relative border border-amber-300/40">
+                        <span class="text-[8px] text-amber-200/80 font-serif">XII</span>
+                        <div class="text-center">
+                          <span class="font-serif text-[10px] tracking-widest text-amber-100 block">FokusMove</span>
+                          <span class="text-[6px] tracking-widest text-sky-300 uppercase block">PRECISION · DISCIPLINE</span>
+                          <span class="font-mono text-xl font-bold text-white block mt-0.5">25:00</span>
+                          <span class="text-[6px] text-amber-300 tracking-wider">SESIÓN 01 · 04</span>
+                        </div>
+                        <span class="text-[8px] text-amber-200/80 font-serif">VI</span>
+                      </div>
+                    </div>
+                    <div class="flex gap-1.5 text-[8px] font-bold">
+                      <span class="px-3 py-1 rounded bg-[#D4AF37] text-slate-950">INICIAR</span>
+                      <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">REINICIAR</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="text-xs font-semibold text-swiss-navy">Captura 2.1 — Esfera inicial y análisis de pilares</span>
+                <label class="text-[11px] text-swiss-goldDark hover:underline cursor-pointer font-semibold">
+                  <i class="fa-solid fa-upload mr-1"></i>Subir captura real
+                  <input type="file" accept="image/*" class="hidden" onchange="replaceMockupWithImage(event, 'mockup-chatgpt-1')" />
+                </label>
+              </div>
+            </div>
+
+            <!-- Captura 2.2: Módulos Inferiores de ChatGPT (Calendario, Pecho, Agenda, Informe) -->
+            <div class="bg-skyIce-50 border border-skyIce-200 rounded-2xl p-4 flex flex-col">
+              <div id="mockup-chatgpt-2" onclick="openLightbox('mockup-chatgpt-2', 'Iteración 1 (ChatGPT): Módulos de Calendario, Rutina de Pecho, Agenda e Informe')" class="mockup-frame rounded-xl overflow-hidden border border-slate-300 shadow-md bg-[#0B172A] text-white flex-1 flex flex-col">
+                <div class="bg-slate-100 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between text-[10px] text-slate-500">
+                  <span class="font-mono">Vista de Módulos — ChatGPT Canvas</span>
+                  <span class="text-swiss-navy font-semibold"><i class="fa-solid fa-expand"></i> Ampliar</span>
+                </div>
+                <div class="p-3.5 grid grid-cols-2 gap-2.5 flex-1 text-[9px]">
+                  <!-- 02 Calendario -->
+                  <div class="bg-[#11223D] border border-slate-700/80 rounded-lg p-2.5">
+                    <span class="text-[8px] text-amber-400 font-bold block">02 / CALENDARIO</span>
+                    <span class="font-serif text-xs font-bold block mt-0.5">noviembre de 2026</span>
+                    <div class="grid grid-cols-7 gap-1 text-center text-[7px] text-slate-400 mt-1.5">
+                      <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span>
+                      <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
+                      <span class="bg-amber-400 text-slate-950 font-bold rounded">9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span>
+                    </div>
+                  </div>
+                  <!-- 03 Movimiento del día -->
+                  <div class="bg-[#11223D] border border-slate-700/80 rounded-lg p-2.5">
+                    <span class="text-[8px] text-amber-400 font-bold block">03 / MOVIMIENTO DEL DÍA</span>
+                    <span class="text-[8px] text-sky-300 uppercase mt-0.5 block">HOY TOCA</span>
+                    <span class="font-serif text-sm font-bold text-white">Pecho</span>
+                    <p class="text-[8px] text-slate-300 mt-1 leading-tight">Empuje, control y técnica. Prueba flexiones, press y aperturas.</p>
+                  </div>
+                  <!-- 04 Agenda semanal -->
+                  <div class="bg-[#11223D] border border-slate-700/80 rounded-lg p-2.5">
+                    <span class="text-[8px] text-amber-400 font-bold block">04 / AGENDA SEMANAL</span>
+                    <div class="mt-1.5 flex gap-1">
+                      <span class="bg-slate-900 border border-slate-700 px-1.5 py-0.5 rounded text-slate-400 flex-1">Añadir tarea...</span>
+                      <span class="bg-amber-400 text-slate-950 font-bold px-1.5 py-0.5 rounded">+</span>
+                    </div>
+                  </div>
+                  <!-- 05 Informe diario -->
+                  <div class="bg-[#11223D] border border-slate-700/80 rounded-lg p-2.5">
+                    <span class="text-[8px] text-amber-400 font-bold block">05 / INFORME DIARIO</span>
+                    <div class="flex justify-around mt-1.5 text-center">
+                      <div>
+                        <span class="text-sm font-bold text-white block">0</span>
+                        <span class="text-[7px] text-slate-400">MINUTOS FOCO</span>
+                      </div>
+                      <div>
+                        <span class="text-sm font-bold text-amber-400 block">0</span>
+                        <span class="text-[7px] text-slate-400">SESIONES</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="text-xs font-semibold text-swiss-navy">Captura 2.2 — Módulos de calendario, rutina e informe</span>
+                <label class="text-[11px] text-swiss-goldDark hover:underline cursor-pointer font-semibold">
+                  <i class="fa-solid fa-upload mr-1"></i>Subir captura real
+                  <input type="file" accept="image/*" class="hidden" onchange="replaceMockupWithImage(event, 'mockup-chatgpt-2')" />
+                </label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           PASO 3: SEGUNDA ITERACIÓN CON GEMINI
+           ===================================================================== -->
+      <section id="paso-3" class="reveal relative lg:pl-16">
+        <div class="hidden lg:flex absolute left-4 top-6 w-12 h-12 rounded-full bg-swiss-navy text-swiss-gold font-serif font-bold text-xl items-center justify-center border-4 border-skyIce-100 shadow-md z-10">
+          03
+        </div>
+
+        <div class="luxury-card rounded-3xl p-6 sm:p-8">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-skyIce-200 pb-4 mb-5">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-widest text-indigo-700">Fase 3 • Elevación Estética y Bisel Acanalado</span>
+              <h2 class="font-serif text-2xl sm:text-3xl font-bold text-swiss-navy mt-0.5">Segunda Iteración con Google Gemini</h2>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-indigo-50 text-indigo-800 text-xs font-semibold border border-indigo-200">
+              <i class="fa-solid fa-sparkles mr-1"></i> Google Gemini
+            </span>
+          </div>
+
+          <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+            Con la estructura validada, el requerimiento se trasladó a <strong>Gemini</strong>. El salto cualitativo en diseño visual fue notable: Gemini incorporó el característico <strong>bisel acanalado dorado</strong> estilo Rolex Day-Date, la esfera <em>blue sunburst</em> con la corona superior, la ventanilla del día de la semana ("LUNES") y el reproductor integrado de la banda sonora de <strong>Rocky ("Gonna Fly Now")</strong> junto con la Agenda de Tareas DAM. A partir de esta versión se detectó la oportunidad de incluir también la hora en tiempo real y aclarar el fondo general.
+          </p>
+
+          <!-- Mockup fiel de las capturas de Gemini -->
+          <div class="bg-skyIce-50 border border-skyIce-200 rounded-2xl p-4">
+            <div id="mockup-gemini" onclick="openLightbox('mockup-gemini', 'Iteración 2 (Google Gemini): Bisel Acanalado Dorado, Esfera Sunburst y BSO Rocky')" class="mockup-frame rounded-xl overflow-hidden border border-slate-300 shadow-md bg-[#09111E] text-white">
+              <div class="bg-slate-100 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between text-[10px] text-slate-500">
+                <span class="font-mono">gemini.google.com — Prototipo FOKUSMOVE</span>
+                <span class="text-swiss-navy font-semibold"><i class="fa-solid fa-expand"></i> Ampliar</span>
+              </div>
+
+              <div class="p-5 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <!-- Izquierda: Reloj Gemini con Bisel Acanalado -->
+                <div class="flex flex-col items-center">
+                  <div class="w-full flex justify-between items-center text-[9px] text-amber-300/90 border-b border-slate-800 pb-2 mb-4">
+                    <span class="font-serif font-bold tracking-widest"><i class="fa-solid fa-crown mr-1"></i>FOKUSMOVE</span>
+                    <span class="text-slate-400">lunes, 9 de noviembre de 2026</span>
+                  </div>
+
+                  <div class="w-44 h-44 rounded-full p-2.5 mini-fluted-bezel shadow-2xl flex items-center justify-center">
+                    <div class="w-full h-full rounded-full bg-[radial-gradient(circle,#1B4B7A_0%,#0B223D_85%)] flex flex-col items-center justify-between p-3 relative border border-amber-200/50">
+                      <span class="bg-[#F8F3E3] text-slate-900 font-serif font-bold text-[8px] px-2.5 py-0.5 rounded tracking-widest">LUNES</span>
+                      <div class="text-center">
+                        <i class="fa-solid fa-crown text-amber-400 text-[9px]"></i>
+                        <span class="font-serif text-[10px] tracking-widest text-amber-200 block">FOKUSMOVE</span>
+                        <span class="font-mono text-2xl font-bold text-white block">25:00</span>
+                        <span class="text-[7px] text-sky-300 tracking-widest">SESIÓN DE ENFOQUE</span>
+                      </div>
+                      <span class="text-[6px] text-amber-200/70 tracking-widest">SWISS MADE • DAM EDITION</span>
+                      <!-- Ventanilla fecha a las 3 -->
+                      <span class="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-slate-900 font-bold text-[8px] px-1 rounded shadow">9</span>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 flex gap-2 text-[9px] font-bold">
+                    <span class="px-5 py-1.5 rounded-lg bg-gradient-to-r from-amber-300 to-amber-500 text-slate-950"><i class="fa-solid fa-play mr-1"></i>INICIAR</span>
+                    <span class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-300"><i class="fa-solid fa-rotate-right"></i></span>
+                  </div>
+                </div>
+
+                <!-- Derecha: Paneles inferiores de Gemini (Rutina Lunes Pecho, Rocky Player y Agenda DAM) -->
+                <div class="space-y-3 text-xs">
+                  <div class="bg-[#111C2E] border border-slate-800 rounded-xl p-3.5">
+                    <div class="flex justify-between items-center mb-1">
+                      <span class="text-[9px] text-amber-400 font-bold uppercase tracking-wider">Rutina Activa de Descanso</span>
+                      <span class="text-[8px] bg-slate-800 px-2 py-0.5 rounded-full text-slate-300">EN ESPERA</span>
+                    </div>
+                    <h4 class="font-serif text-base font-bold text-white">Lunes - Pecho</h4>
+                    <p class="text-[10px] italic text-slate-400 mt-0.5">"Un paso a la vez, un golpe a la vez, un asalto a la vez."</p>
+                    <div class="grid grid-cols-2 gap-2 mt-2.5 text-[9px]">
+                      <div class="bg-slate-900/90 p-2 rounded border border-slate-800">
+                        <strong class="text-amber-300 block">Flexiones Clásicas</strong>
+                        <span class="text-slate-400">3 series x 15 reps</span>
+                      </div>
+                      <div class="bg-slate-900/90 p-2 rounded border border-slate-800">
+                        <strong class="text-amber-300 block">Flexiones Diamante</strong>
+                        <span class="text-slate-400">3 series x 10 reps</span>
+                      </div>
+                    </div>
+                    <!-- Barra BSO Rocky -->
+                    <div class="mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between text-[9px]">
+                      <span class="text-amber-400 font-bold"><i class="fa-solid fa-music mr-1"></i>BANDA SONORA ROCKY</span>
+                      <span class="text-slate-300 font-mono">Gonna Fly Now (Theme)</span>
+                    </div>
+                  </div>
+
+                  <div class="bg-[#111C2E] border border-slate-800 rounded-xl p-3.5">
+                    <div class="flex justify-between items-center mb-2">
+                      <span class="text-xs font-bold text-amber-300"><i class="fa-solid fa-square-check mr-1"></i>Agenda de Tareas DAM</span>
+                      <span class="text-[9px] text-slate-400">1/2 Tareas</span>
+                    </div>
+                    <div class="space-y-1.5 text-[10px]">
+                      <div class="bg-slate-900 px-2.5 py-1.5 rounded flex justify-between text-slate-300">
+                        <span>☐ Revisar tema de Hilos e Interfaz en DAM</span>
+                        <span class="text-amber-400 text-[8px]">Lunes</span>
+                      </div>
+                      <div class="bg-slate-900/60 px-2.5 py-1.5 rounded flex justify-between text-slate-500 line-through">
+                        <span>☑ Completar práctica de Layouts</span>
+                        <span class="text-slate-500 text-[8px]">Martes</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3 flex items-center justify-between">
+              <span class="text-xs font-semibold text-swiss-navy">Captura 3.1 — Diseño aprobado de esfera acanalada e integración de módulos en Gemini</span>
+              <label class="text-[11px] text-swiss-goldDark hover:underline cursor-pointer font-semibold">
+                <i class="fa-solid fa-upload mr-1"></i>Subir captura real
+                <input type="file" accept="image/*" class="hidden" onchange="replaceMockupWithImage(event, 'mockup-gemini')" />
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           PASO 4: TERCERA ITERACIÓN Y REFINAMIENTO EN GOOGLE STITCH
+           ===================================================================== -->
+      <section id="paso-4" class="reveal relative lg:pl-16">
+        <div class="hidden lg:flex absolute left-4 top-6 w-12 h-12 rounded-full bg-swiss-navy text-swiss-gold font-serif font-bold text-xl items-center justify-center border-4 border-skyIce-100 shadow-md z-10">
+          04
+        </div>
+
+        <div class="luxury-card rounded-3xl p-6 sm:p-8">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-skyIce-200 pb-4 mb-5">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-widest text-sky-700">Fase 4 • Prototipado UI/UX Iterativo y Despliegue</span>
+              <h2 class="font-serif text-2xl sm:text-3xl font-bold text-swiss-navy mt-0.5">Refinamiento en Google Stitch y Versión Final</h2>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-sky-100 text-sky-900 text-xs font-semibold border border-sky-300">
+              <i class="fa-solid fa-compass-drafting mr-1"></i> Google Stitch (3 Iteraciones)
+            </span>
+          </div>
+
+          <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+            Con las mejores ideas consolidadas, se utilizó <strong>Google Stitch</strong> para pulir la experiencia de usuario (UX) a través de tres prototipos consecutivos hasta lograr una interfaz limpia, sin distracciones durante el estudio y con tonos más luminosos.
+          </p>
+
+          <!-- Sub-fases de Stitch -->
+          <div class="space-y-6">
+
+            <!-- Sub-fase 4.1 -->
+            <div class="bg-skyIce-50 border border-skyIce-200 rounded-2xl p-5">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+                <div class="lg:col-span-5">
+                  <span class="inline-block px-2.5 py-0.5 rounded bg-amber-100 text-amber-900 text-[10px] font-bold uppercase tracking-wider mb-2">Prototipo Stitch #1</span>
+                  <h3 class="font-serif text-xl font-bold text-swiss-navy">Esfera Ice Blue y Diagnóstico de UX</h3>
+                  <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                    El primer prototipo de Stitch introdujo la esfera <em>Ice Blue</em> y la tarjeta de ejercicio dominical (<strong>Saltar a la comba</strong> con diagrama SVG y cita de Rocky Balboa). Sin embargo, al evaluarlo se detectaron tres puntos de mejora:
+                  </p>
+                  <ul class="mt-2.5 space-y-1 text-xs text-slate-700">
+                    <li><i class="fa-solid fa-circle-exclamation text-amber-600 mr-1.5"></i>El fondo general era demasiado oscuro.</li>
+                    <li><i class="fa-solid fa-circle-exclamation text-amber-600 mr-1.5"></i>La pestaña central decía <em>"Fitness Corto"</em> en vez de <em>"Descanso Corto"</em>.</li>
+                    <li><i class="fa-solid fa-circle-exclamation text-amber-600 mr-1.5"></i>Los paneles de fitness y agenda debían ocultarse durante el estudio.</li>
+                  </ul>
+                </div>
+
+                <div class="lg:col-span-7">
+                  <div id="mockup-stitch-1" onclick="openLightbox('mockup-stitch-1', 'Prototipo Stitch #1: Esfera Ice Blue y Detección de Mejoras UX')" class="mockup-frame rounded-xl overflow-hidden border border-slate-300 shadow-md bg-[#0C1422] text-white p-4">
+                    <div class="flex justify-between items-center text-[9px] border-b border-slate-800 pb-2 mb-3">
+                      <span class="text-amber-400 font-serif font-bold">FOKUSMOVE • EDICIÓN PLATINO</span>
+                      <span class="text-slate-400">DOMINGO • 15 de Noviembre, 2026</span>
+                    </div>
+                    <div class="grid grid-cols-12 gap-3 items-center">
+                      <div class="col-span-6 flex flex-col items-center">
+                        <div class="flex gap-1 text-[7px] mb-2">
+                          <span class="px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-bold">ENFOQUE</span>
+                          <span class="px-2 py-0.5 rounded-full bg-slate-800 text-amber-300 border border-amber-400/40">FITNESS CORTO</span>
+                          <span class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">DESCANSO LARGO</span>
+                        </div>
+                        <div class="w-32 h-32 rounded-full p-2 mini-fluted-bezel flex items-center justify-center">
+                          <div class="w-full h-full rounded-full bg-[radial-gradient(circle,#F4F9FF_0%,#BBD5EE_100%)] text-slate-900 flex flex-col items-center justify-center p-2">
+                            <span class="text-[7px] font-bold uppercase text-slate-500">DOMINGO</span>
+                            <span class="font-serif text-[9px] font-bold">FOKUSMOVE</span>
+                            <span class="font-mono text-xl font-bold">25:00</span>
+                            <span class="text-[6px] bg-slate-900 text-amber-400 px-1.5 rounded-full">SESIÓN ACTIVA</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-span-6 bg-[#131E32] border border-slate-700 rounded-lg p-2.5 text-[8px]">
+                        <span class="text-amber-400 font-bold block">RUTINA FITNESS PARA EL DESCANSO</span>
+                        <strong class="text-white text-[10px] block mt-1">Saltar a la comba</strong>
+                        <p class="text-slate-300 mt-0.5">3 intervalos de 1 minuto de saltos continuos.</p>
+                        <p class="italic text-amber-200/80 mt-1.5">"No se trata de cuán fuerte golpeas..." — Rocky</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-2 flex justify-between items-center">
+                    <span class="text-[11px] font-semibold text-swiss-navy">Captura 4.1 — Primer prototipo generado en Stitch</span>
+                    <label class="text-[11px] text-swiss-goldDark hover:underline cursor-pointer font-semibold">
+                      <i class="fa-solid fa-upload mr-1"></i>Subir captura real
+                      <input type="file" accept="image/*" class="hidden" onchange="replaceMockupWithImage(event, 'mockup-stitch-1')" />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sub-fase 4.2 -->
+            <div class="bg-skyIce-50 border border-skyIce-200 rounded-2xl p-5">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+                <div class="lg:col-span-5">
+                  <span class="inline-block px-2.5 py-0.5 rounded bg-sky-100 text-sky-900 text-[10px] font-bold uppercase tracking-wider mb-2">Prototipo Stitch #2</span>
+                  <h3 class="font-serif text-xl font-bold text-swiss-navy">Temas Rolex, Lupa Cíclope y Plegado de Paneles</h3>
+                  <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                    En la segunda revisión se incorporó un <strong>selector de modelos Rolex</strong> (Day-Date Ice Blue, Submariner Hulk, GMT Pepsi, Daytona Panda), se corrigió la barra de modos a <em>Enfoque / Descanso Corto / Descanso Largo</em>, se añadió la <strong>lupa cíclope con el día del mes ("15")</strong> a las 3 en punto y se habilitó el botón <em>"Ver / Ocultar Agenda &amp; Fitness"</em> para mantener máxima concentración al estudiar.
+                  </p>
+                </div>
+
+                <div class="lg:col-span-7">
+                  <div id="mockup-stitch-2" onclick="openLightbox('mockup-stitch-2', 'Prototipo Stitch #2: Modo Enfoque Plegado y Modo Descanso Desplegado')" class="mockup-frame rounded-xl overflow-hidden border border-slate-300 shadow-md bg-[#0E1726] text-white p-4">
+                    <div class="grid grid-cols-2 gap-3">
+                      <!-- Estado A: Modo Enfoque (Limpio) -->
+                      <div class="bg-[#0B1320] border border-slate-800 rounded-lg p-3 flex flex-col items-center">
+                        <span class="text-[8px] text-amber-400 font-bold uppercase mb-2">Estado A: Modo Enfoque (Limpio)</span>
+                        <div class="flex gap-1 text-[6px] mb-2">
+                          <span class="px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-bold">ENFOQUE</span>
+                          <span class="px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400">DESCANSO CORTO</span>
+                        </div>
+                        <div class="w-24 h-24 rounded-full p-1.5 mini-fluted-bezel flex items-center justify-center">
+                          <div class="w-full h-full rounded-full bg-[radial-gradient(circle,#F4F9FF_0%,#BBD5EE_100%)] text-slate-900 flex flex-col items-center justify-center relative">
+                            <span class="text-[6px] font-bold">LUNES</span>
+                            <span class="font-mono text-sm font-bold">25:00</span>
+                            <span class="absolute right-1 top-1/2 -translate-y-1/2 bg-white border border-amber-500 text-[6px] font-bold px-1 rounded">15</span>
+                          </div>
+                        </div>
+                        <span class="mt-2 text-[7px] text-slate-400"><i class="fa-solid fa-eye-slash text-amber-400 mr-1"></i>Paneles laterales ocultos</span>
+                      </div>
+
+                      <!-- Estado B: Modo Descanso (Desplegado) -->
+                      <div class="bg-[#0B1320] border border-slate-800 rounded-lg p-3 flex flex-col justify-between">
+                        <span class="text-[8px] text-emerald-400 font-bold uppercase text-center mb-1">Estado B: Descanso (Desplegado)</span>
+                        <div class="grid grid-cols-2 gap-1.5 items-center my-auto">
+                          <div class="flex flex-col items-center">
+                            <div class="w-20 h-20 rounded-full p-1 mini-fluted-bezel flex items-center justify-center">
+                              <div class="w-full h-full rounded-full bg-[radial-gradient(circle,#F4F9FF_0%,#BBD5EE_100%)] text-slate-900 flex flex-col items-center justify-center">
+                                <span class="font-mono text-xs font-bold">05:00</span>
+                                <span class="text-[5px] bg-emerald-600 text-white px-1 rounded">DESCANSO</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="bg-slate-900 border border-amber-400/30 rounded p-1.5 text-[6px]">
+                            <strong class="text-amber-300 block">RUTINA FITNESS</strong>
+                            <span class="text-white font-bold">Saltar a la comba</span>
+                            <span class="text-slate-400 block mt-1">BSO: Eye of the Tiger</span>
+                            <strong class="text-amber-300 block mt-1.5">AGENDA PRIORITARIA</strong>
+                            <span class="text-slate-400">2 Pendientes</span>
+                          </div>
+                        </div>
+                        <span class="mt-2 text-[7px] text-center text-emerald-300"><i class="fa-solid fa-eye mr-1"></i>Rutina y Agenda visibles</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-2 flex justify-between items-center">
+                    <span class="text-[11px] font-semibold text-swiss-navy">Captura 4.2 — Comparativa de plegado automático entre Enfoque y Descanso</span>
+                    <label class="text-[11px] text-swiss-goldDark hover:underline cursor-pointer font-semibold">
+                      <i class="fa-solid fa-upload mr-1"></i>Subir captura real
+                      <input type="file" accept="image/*" class="hidden" onchange="replaceMockupWithImage(event, 'mockup-stitch-2')" />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sub-fase 4.3: Versión Final en GitHub Pages -->
+            <div class="bg-skyIce-50 border border-skyIce-200 rounded-2xl p-5">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+                <div class="lg:col-span-5">
+                  <span class="inline-block px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-900 text-[10px] font-bold uppercase tracking-wider mb-2">Prototipo Final &amp; Producción</span>
+                  <h3 class="font-serif text-xl font-bold text-swiss-navy">Fondos Claros, Barra Plegable y Despliegue</h3>
+                  <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                    Para cerrar el desarrollo se solicitó aclarar la luminosidad de los fondos temáticos y convertir la barra superior en un menú interactivo plegable pulsando sobre el logotipo de <strong>FOKUSMOVE</strong>. Finalmente, el proyecto se publicó en <strong>GitHub Pages</strong>, verificando el ciclo completo con notificación de fin de sesión de enfoque.
+                  </p>
+                </div>
+
+                <div class="lg:col-span-7">
+                  <div id="mockup-stitch-final" onclick="openLightbox('mockup-stitch-final', 'Versión Final en GitHub Pages: Notificación de Fin de Sesión y Fondos Claros')" class="mockup-frame rounded-xl overflow-hidden border border-slate-300 shadow-md bg-[#162742] text-white">
+                    <div class="bg-slate-100 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between text-[9px] text-slate-600">
+                      <span class="font-mono truncate">francorv01-cyber.github.io/2-DAM---Desarrollo-de-Interfaces/pomodoro.html</span>
+                      <span class="text-swiss-navy font-semibold shrink-0 ml-2"><i class="fa-solid fa-expand"></i> Ampliar</span>
+                    </div>
+                    <div class="p-4 relative flex flex-col items-center bg-[radial-gradient(circle_at_50%_25%,#2B456E_0%,#14233A_100%)]">
+                      <!-- Modal de alerta simulado tal como aparece en la captura final -->
+                      <div class="bg-white text-slate-900 rounded-xl shadow-2xl p-3.5 max-w-xs w-full border border-slate-200 mb-3 z-10">
+                        <span class="text-[9px] font-bold text-slate-800 block">francorv01-cyber.github.io dice</span>
+                        <p class="text-[9px] text-slate-600 mt-1">¡Sesión de Enfoque culminada! Momento del Descanso Corto. Revisa tu rutina fitness.</p>
+                        <div class="flex justify-end mt-2">
+                          <span class="px-3 py-0.5 rounded-full bg-[#8F6F2C] text-white text-[8px] font-bold">Aceptar</span>
+                        </div>
+                      </div>
+                      <!-- Reloj en 00:00 -->
+                      <div class="w-28 h-28 rounded-full p-1.5 mini-fluted-bezel flex items-center justify-center opacity-90">
+                        <div class="w-full h-full rounded-full bg-[radial-gradient(circle,#F4F9FF_0%,#BBD5EE_100%)] text-slate-900 flex flex-col items-center justify-center">
+                          <span class="text-[6px] font-bold">LUNES</span>
+                          <span class="font-serif text-[8px] font-bold">FOKUSMOVE</span>
+                          <span class="font-mono text-lg font-bold">00:00</span>
+                          <span class="text-[6px] text-amber-700 font-bold">Meta Diaria: 0/4</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-2 flex justify-between items-center">
+                    <span class="text-[11px] font-semibold text-swiss-navy">Captura 4.3 — Validación funcional en producción (GitHub Pages)</span>
+                    <label class="text-[11px] text-swiss-goldDark hover:underline cursor-pointer font-semibold">
+                      <i class="fa-solid fa-upload mr-1"></i>Subir captura real
+                      <input type="file" accept="image/*" class="hidden" onchange="replaceMockupWithImage(event, 'mockup-stitch-final')" />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           PASO 5: CONCLUSIÓN Y APRENDIZAJES MULTI-IA
+           ===================================================================== -->
+      <section id="paso-5" class="reveal relative lg:pl-16">
+        <div class="hidden lg:flex absolute left-4 top-6 w-12 h-12 rounded-full bg-swiss-navy text-swiss-gold font-serif font-bold text-xl items-center justify-center border-4 border-skyIce-100 shadow-md z-10">
+          05
+        </div>
+
+        <div class="luxury-card rounded-3xl p-6 sm:p-8 border-t-4 border-t-swiss-gold">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-skyIce-200 pb-4 mb-5">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-widest text-swiss-goldDark">Fase 5 • Síntesis y Reflexión Académica</span>
+              <h2 class="font-serif text-2xl sm:text-3xl font-bold text-swiss-navy mt-0.5">Conclusión y Aprendizaje sobre Colaboración Multi-IA</h2>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-amber-50 text-amber-900 text-xs font-semibold border border-amber-200">
+              <i class="fa-solid fa-award mr-1 text-swiss-goldDark"></i> Balance Final DAM
+            </span>
+          </div>
+
+          <p class="text-slate-700 text-sm sm:text-base leading-relaxed mb-6">
+            El desarrollo de <strong>FokusMove</strong> a través de tres inteligencias artificiales distintas demuestra que la colaboración multi-modelo es un potente acelerador en la ingeniería de software moderna. Ninguna herramienta es un monolito perfecto, pero la combinación estratégica de sus fortalezas multiplica la calidad del resultado final.
+          </p>
+
+          <!-- Tarjetas de Aprendizajes Clave -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+            <div class="bg-white border border-skyIce-300 rounded-2xl p-5 shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-skyIce-100 text-swiss-navy flex items-center justify-center text-lg mb-3">
+                <i class="fa-solid fa-diagram-project"></i>
+              </div>
+              <h3 class="font-serif text-lg font-bold text-swiss-navy mb-1.5">Orquestación de Modelos</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                <strong>ChatGPT</strong> estructuró la arquitectura inicial, <strong>Gemini</strong> elevó la estética relojera y <strong>Stitch</strong> refinó la interacción UX. Delegar según la fortaleza de cada IA simula un equipo multidisciplinar real.
+              </p>
+            </div>
+
+            <div class="bg-white border border-skyIce-300 rounded-2xl p-5 shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-amber-50 text-swiss-goldDark flex items-center justify-center text-lg mb-3">
+                <i class="fa-solid fa-code-branch"></i>
+              </div>
+              <h3 class="font-serif text-lg font-bold text-swiss-navy mb-1.5">Ingeniería de Prompts</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Obtener acabados profesionales exige precisión técnica: especificar tipografías, comportamientos de plegado condicional, estados de temporizador y persistencia evita respuestas genéricas.
+              </p>
+            </div>
+
+            <div class="bg-white border border-skyIce-300 rounded-2xl p-5 shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-skyIce-100 text-swiss-navy flex items-center justify-center text-lg mb-3">
+                <i class="fa-solid fa-user-check"></i>
+              </div>
+              <h3 class="font-serif text-lg font-bold text-swiss-navy mb-1.5">Criterio del Desarrollador</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                La IA acelera la generación de código, pero la visión de producto, la detección de fallos visuales y la auditoría final del código dependen siempre del criterio técnico del programador.
+              </p>
+            </div>
+          </div>
+
+          <!-- Cita de cierre -->
+          <div class="bg-swiss-navy text-white rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <i class="fa-solid fa-quote-left text-swiss-gold text-2xl mt-1"></i>
+              <p class="text-xs sm:text-sm text-skyIce-100 leading-relaxed">
+                <strong class="text-swiss-goldLight">En conclusión:</strong> FokusMove evidencia que el valor real en el desarrollo de interfaces actual reside en combinar una idea creativa propia con la orquestación iterativa de múltiples IAs y una validación rigurosa hasta su despliegue en producción.
+              </p>
+            </div>
+            <a href="https://francorv01-cyber.github.io/2-DAM---Desarrollo-de-Interfaces/pomodoro.html?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" class="shrink-0 px-5 py-2.5 rounded-xl bg-swiss-gold hover:bg-swiss-goldLight text-swiss-navy font-bold text-xs uppercase tracking-wider transition shadow-md">
+              Visitar FokusMove <i class="fa-solid fa-arrow-right ml-1"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="border-t border-skyIce-300 bg-white/70 backdrop-blur-sm py-6 px-4 text-center text-xs text-slate-500">
+    <p class="font-semibold text-swiss-navy">Franco Rodríguez Vargas • 2º DAM — Desarrollo de Interfaces</p>
+    <p class="mt-1">Documentación interactiva del proyecto <strong>FokusMove</strong> (ChatGPT • Google Gemini • Google Stitch)</p>
+  </footer>
+
+  <!-- VISOR MODAL LIGHTBOX PARA AMPLIAR CAPTURAS -->
+  <div id="lightboxModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-4" onclick="closeLightbox(event)">
+    <div class="bg-white rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl border border-skyIce-300" onclick="event.stopPropagation()">
+      <div class="px-5 py-3.5 bg-swiss-navy text-white flex items-center justify-between">
+        <h3 id="lightboxTitle" class="font-serif text-lg font-bold text-swiss-goldLight">Vista Ampliada</h3>
+        <button onclick="closeLightbox()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div id="lightboxBody" class="p-6 bg-skyIce-100 max-h-[80vh] overflow-y-auto flex items-center justify-center">
+        <!-- Contenido clonado dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT PARA INTERACTIVIDAD, LIGHTBOX Y CARGA DE IMÁGENES -->
+  <script>
+    // 1. Desplegar / plegar el prompt original
+    function togglePromptBox() {
+      const content = document.getElementById('promptContent');
+      const chevron = document.getElementById('promptChevron');
+      content.classList.toggle('hidden');
+      chevron.classList.toggle('rotate-180');
+    }
+
+    // 2. Ampliar cualquier captura o mockup en el modal Lightbox
+    function openLightbox(elementId, title) {
+      const sourceEl = document.getElementById(elementId);
+      if (!sourceEl) return;
+
+      const modal = document.getElementById('lightboxModal');
+      const modalTitle = document.getElementById('lightboxTitle');
+      const modalBody = document.getElementById('lightboxBody');
+
+      modalTitle.textContent = title;
+      modalBody.innerHTML = '';
+
+      const clone = sourceEl.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.removeAttribute('onclick');
+      clone.classList.remove('mockup-frame');
+      clone.classList.add('w-full', 'max-w-3xl', 'shadow-xl');
+
+      modalBody.appendChild(clone);
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightboxModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Cerrar modal con tecla Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // 3. Permitir sustituir un mockup por la captura PNG/JPG local si el alumno lo desea
+    function replaceMockupWithImage(event, targetId) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const container = document.getElementById(targetId);
+        if (container) {
+          container.innerHTML = `<img src="${e.target.result}" alt="Captura de pantalla FokusMove" class="w-full h-auto object-contain block" />`;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // 4. Animación suave al hacer scroll (IntersectionObserver)
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>
