@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Planifica tu viaje a Perú – Calculadora de presupuesto | PERÚ</title>
+  <meta name="description" content="Calcula un presupuesto orientativo para tu viaje a Perú según viajeros, días, región, alojamiento, transporte y actividades.">
+  <meta name="theme-color" content="#D91023">
+  <link rel="stylesheet" href="../css/themes.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <script src="../js/theme.js"></script>
+</head>
+<body data-page="planifica" data-root="../">
+  <div id="site-header"></div>
+  <main id="main">
+    <section class="page-hero" style="min-height:40vh">
+      <div class="hero-media card-media is-bg" data-img="es:Cuzco|en:Cusco" data-alt="Ciudad de Cusco vista desde lo alto" data-emoji="🧭" style="aspect-ratio:auto"></div>
+      <div class="container hero-content">
+        <span class="eyebrow" style="color:#ffd9dd">🧭 Herramienta</span>
+        <h1>PLANIFICA TU VIAJE</h1>
+        <p>Calcula un presupuesto orientativo en euros y genera un resumen para compartir.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container planner">
+        <form class="panel" id="calc" novalidate>
+          <h2>Datos del viaje</h2>
+          <div class="field-row">
+            <div class="field"><label for="travelers">Número de viajeros</label>
+              <input class="input" id="travelers" type="number" min="1" max="30" step="1" value="2" required>
+              <div class="error-msg" id="travelersErr" aria-live="polite"></div></div>
+            <div class="field"><label for="days">Número de días</label>
+              <input class="input" id="days" type="number" min="1" max="60" step="1" value="10" required>
+              <div class="error-msg" id="daysErr" aria-live="polite"></div></div>
+          </div>
+          <div class="field"><label for="region">Región que quieres visitar</label>
+            <select class="input" id="region" required>
+              <option value="costa">Costa</option><option value="sierra">Sierra</option><option value="selva">Selva</option><option value="combinada">Combinada (Costa + Sierra + Selva)</option>
+            </select><div class="error-msg" id="regionErr" aria-live="polite"></div></div>
+          <div class="field-row">
+            <div class="field"><label for="lodging">Tipo de alojamiento</label>
+              <select class="input" id="lodging" required>
+                <option value="hostal">Hostal / albergue</option><option value="hotel3" selected>Hotel 3★</option><option value="hotel5">Hotel 4-5★</option>
+              </select><div class="error-msg" id="lodgingErr" aria-live="polite"></div></div>
+            <div class="field"><label for="transport">Tipo de transporte interno</label>
+              <select class="input" id="transport" required>
+                <option value="bus">Bus</option><option value="mixto" selected>Bus + vuelos internos</option><option value="avion">Vuelos internos</option>
+              </select><div class="error-msg" id="transportErr" aria-live="polite"></div></div>
+          </div>
+          <div class="field"><label for="budget">Presupuesto disponible total (€, opcional)</label>
+            <input class="input" id="budget" type="number" min="0" step="50" placeholder="Ej.: 3000">
+            <div class="error-msg" id="budgetErr" aria-live="polite"></div></div>
+          <fieldset class="field"><legend>Actividades que quieres hacer</legend>
+            <div class="act-list" id="acts"></div></fieldset>
+          <div class="btn-row">
+            <button class="btn" type="submit">Calcular presupuesto</button>
+            <button class="btn ghost" type="reset" id="reset">Reiniciar formulario</button>
+          </div>
+          <details class="config">
+            <summary>Ajustar precios orientativos</summary>
+            <p class="notice">Los importes son supuestos configurables por persona y día (actividades: por persona). No son precios reales de proveedores. Se guardan en tu navegador.</p>
+            <div class="cfg-grid" id="cfgGrid"></div>
+            <div class="btn-row"><button class="btn ghost small" type="button" id="cfgReset">Restaurar precios por defecto</button></div>
+          </details>
+        </form>
+
+        <aside class="panel" id="result" aria-live="polite">
+          <h2>Tu presupuesto orientativo</h2>
+          <p class="lead">Rellena el formulario y pulsa «Calcular presupuesto» para ver el resultado.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <div class="cta-band">
+          <div><h2>¿Quieres un viaje real?</h2><p>Esta calculadora es solo una referencia. Solicita información y un presupuesto real a nuestra agencia colaboradora.</p></div>
+          <a class="btn light" href="https://alesstravels.com/" target="_blank" rel="noopener">Visitar Aless Travels ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="../js/data.js"></script>
+  <script src="../js/favorites.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/calculator.js"></script>
+</body>
+</html>

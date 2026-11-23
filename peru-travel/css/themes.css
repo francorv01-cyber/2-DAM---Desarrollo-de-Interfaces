@@ -1,0 +1,35 @@
+/* ============ TEMAS: claro / oscuro ============ */
+:root {
+  --red: #D91023;
+  --red-dark: #a80c1b;
+  --accent-text: #c00d1f;
+  --bg: #ffffff;
+  --surface: #f7f1e7;      /* arena */
+  --surface-2: #efe6d6;    /* beige */
+  --gray-soft: #f1f1f1;
+  --card: #ffffff;
+  --text: #1f1f22;
+  --muted: #5b5b62;
+  --border: #e6dccb;
+  --shadow: 0 8px 26px rgba(40, 20, 10, .09);
+  --shadow-hover: 0 14px 34px rgba(40, 20, 10, .16);
+  --header-bg: rgba(255, 255, 255, .9);
+  --overlay: linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,.65) 100%);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --accent-text: #ff7a86;
+  --bg: #2B080E;
+  --surface: #380d15;
+  --surface-2: #44121b;
+  --gray-soft: #3e1119;
+  --card: #4a1520;
+  --text: #f7ede9;
+  --muted: #d6bcb8;
+  --border: #6b2631;
+  --shadow: 0 8px 26px rgba(0, 0, 0, .4);
+  --shadow-hover: 0 14px 34px rgba(0, 0, 0, .55);
+  --header-bg: rgba(43, 8, 14, .9);
+  color-scheme: dark;
+}

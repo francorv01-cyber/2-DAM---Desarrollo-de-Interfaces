@@ -1,0 +1,52 @@
+/* ============ RESPONSIVE (mobile-first en componentes clave) ============ */
+
+/* Portátiles pequeños / tablets horizontales */
+@media (max-width: 1024px) {
+  .grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .planner { grid-template-columns: 1fr; }
+  .main-nav a { padding: .45rem .6rem; font-size: .85rem; }
+}
+
+/* Tablets verticales: el menú pasa a panel desplegable */
+@media (max-width: 860px) {
+  .nav-toggle { display: inline-flex; order: 3; }
+  .nav-actions { margin-left: auto; }
+  .main-nav { position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; align-items: stretch; background: var(--bg); border-bottom: 1px solid var(--border); padding: .6rem 4%; gap: .2rem; max-height: 0; overflow: hidden; opacity: 0; pointer-events: none; transition: max-height .35s ease, opacity .25s; margin-left: 0; }
+  .main-nav.open { max-height: 80vh; opacity: 1; pointer-events: auto; padding-block: .8rem; }
+  .main-nav a { padding: .8rem 1rem; font-size: 1rem; border-radius: 12px; }
+  .agency { grid-template-columns: 1fr; }
+  .agency .card-media { min-height: 240px; }
+  .subnav { top: 68px; }
+}
+
+/* Móviles (Android / iPhone) */
+@media (max-width: 640px) {
+  .section { padding: 3rem 0; }
+  .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; }
+  .region-card { min-height: 380px; }
+  .hero { min-height: 82vh; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .field-row, .kpis { grid-template-columns: 1fr; }
+  .cta-band { padding: 2rem 1.4rem; }
+  .agency-body { padding: 1.6rem; }
+  #map { height: 360px; }
+  .check { margin-left: 0; }
+  .brand { font-size: 1.25rem; }
+  .panel { padding: 1.2rem; }
+}
+
+/* Pantallas grandes */
+@media (min-width: 1500px) {
+  .container { width: min(1360px, 90%); }
+}
+
+/* Soporte para notch de iPhone */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .to-top { bottom: calc(1.2rem + env(safe-area-inset-bottom)); }
+  .site-footer { padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
+}
+
+@media print {
+  .site-header, .to-top, .subnav, .drawer { display: none !important; }
+}
