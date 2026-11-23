@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Así creé mi Guía de viajes de Perú · Proceso paso a paso</title>
+  <meta name="description" content="Documentación paso a paso de cómo se creó la web «Guía de viajes de mi país Perú»: ideas, prompts, prototipos en Stitch, errores, correcciones y publicación en GitHub Pages.">
+  <meta name="theme-color" content="#c8102e">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Saltar al contenido</a>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="container top-in">
+      <a class="logo" href="#inicio">PER<span>Ú</span> · Proceso de creación</a>
+      <nav class="nav" aria-label="Pasos del proceso">
+        <a href="#resumen">Resumen</a>
+        <a href="#idea">1 · Idea</a>
+        <a href="#prompt">2 · Prompt</a>
+        <a href="#gemini">3 · Gemini</a>
+        <a href="#stitch">4 · Stitch</a>
+        <a href="#mejora">5 · Mejora</a>
+        <a href="#stitch2">6 · Stitch II</a>
+        <a href="#claude">7 · Claude</a>
+        <a href="#github">8 · GitHub</a>
+        <a href="#resultado">Resultado</a>
+        <a href="#aprendizajes">Aprendizajes</a>
+      </nav>
+    </div>
+  </header>
+
+  <header class="hero" id="inicio">
+    <div class="container">
+      <span class="kicker">Proyecto DAM · Desarrollo de Interfaces · Madrid</span>
+      <h1>Así creé mi <em>Guía de viajes</em> de Perú</h1>
+      <p class="lead">El paso a paso de una web turística, cultural y gastronómica sobre mi país: desde la idea inicial y los primeros prototipos hasta los errores, las correcciones y la publicación.</p>
+      <div class="btn-row">
+        <a class="btn" href="https://francorv01-cyber.github.io/2-DAM---Desarrollo-de-Interfaces/peru-travel/Guia%20de%20viajes%20de%20mi%20pais%20Per%C3%BA.html" target="_blank" rel="noopener">Ver la web terminada ↗</a>
+        <a class="btn alt" href="https://stitch.google.com/projects/1535703705261178710" target="_blank" rel="noopener">Prototipos en Stitch ↗</a>
+        <a class="btn line" href="#idea">Empezar el recorrido ↓</a>
+      </div>
+      <div class="stats reveal">
+        <div class="stat"><strong>4</strong><span>herramientas de IA probadas</span></div>
+        <div class="stat"><strong>2</strong><span>versiones del prompt</span></div>
+        <div class="stat"><strong>3</strong><span>regiones: Costa, Sierra y Selva</span></div>
+        <div class="stat"><strong>1</strong><span>web publicada en GitHub Pages</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- RESUMEN -->
+    <section class="step" id="resumen">
+      <div class="container">
+        <div class="step-head reveal"><div class="num">★</div><div><h2>El proyecto en un vistazo</h2><p>Qué había que hacer y cómo se resolvió.</p></div></div>
+        <div class="grid g3">
+          <div class="card reveal"><span class="tag">El reto</span><h3>Una guía de viaje de Perú</h3><p>Una aplicación web multipantalla con sitios turísticos, restaurantes y deportes, con modo claro y oscuro, y diseño adaptable a cualquier dispositivo.</p></div>
+          <div class="card reveal"><span class="tag">El método</span><h3>Iterar con IA</h3><p>Escribí los requisitos, los convertí en un prompt, probé varias herramientas, detecté errores y mejoré el prompt hasta conseguir el resultado buscado.</p></div>
+          <div class="card reveal"><span class="tag">El resultado</span><h3>Una web de 7 páginas</h3><p>Inicio, Costa, Sierra, Selva, Gastronomía, Planifica tu viaje y Consejos, publicada con GitHub Pages y con la agencia Aless Travels integrada.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PASO 1 -->
+    <section class="step" id="idea">
+      <div class="container">
+        <div class="step-head reveal"><div class="num">1</div><div><h2>La tarea y la idea inicial</h2><p>Antes de pedir nada a una IA, había que tener claro qué se quería.</p></div></div>
+        <div class="prose reveal">
+          <p>La tarea del ciclo superior de <strong>Desarrollo de Aplicaciones Multiplataforma (DAM)</strong>, en Madrid, consistía en crear una aplicación web sobre <strong>«Mi país: Perú»</strong>: una especie de guía de viaje con sitios turísticos, restaurantes y deportes. El objetivo académico era practicar <strong>maquetación, apps multipantalla, cards y transiciones</strong>.</p>
+          <p>Mi idea fue aprovechar que Perú tiene tres regiones muy distintas y dedicar <strong>una pantalla independiente a cada una</strong>. En todas, tres bloques de tres elementos con fotografías que demostraran cada cosa:</p>
+        </div>
+        <div class="grid g3">
+          <div class="card reveal"><span class="tag">Costa</span>
+            <h3>Desierto y Pacífico</h3>
+            <p><b>Cultura:</b> Chan Chan, Líneas de Nazca, Caral.</p>
+            <p><b>Turismo:</b> Dunas de Ica, Máncora, Huanchaco.</p>
+            <p><b>Gastronomía:</b> ceviche, lomo saltado, ají de gallina.</p></div>
+          <div class="card reveal"><span class="tag">Sierra</span>
+            <h3>Los Andes</h3>
+            <p><b>Cultura:</b> Machu Picchu, Cusco, Kuélap.</p>
+            <p><b>Turismo:</b> Machu Picchu, lago Titicaca, Cañón del Colca.</p>
+            <p><b>Gastronomía:</b> pachamanca, cuy chactado, patasca.</p></div>
+          <div class="card reveal"><span class="tag">Selva</span>
+            <h3>Amazonía</h3>
+            <p><b>Cultura:</b> pueblos Shipibo-Konibo, Asháninka y Awajún.</p>
+            <p><b>Turismo:</b> Pacaya Samiria, Tambopata, catarata de Gocta.</p>
+            <p><b>Gastronomía:</b> juane, tacacho con cecina, patarashca.</p></div>
+        </div>
+        <div class="note reveal"><strong>Una distinción clave:</strong> «cultura» habla de lo que había allí antes (civilizaciones, historia y tradiciones), mientras que «turismo» se centra en qué ver y visitar hoy. Esa diferencia se mantuvo en todas las versiones del proyecto.</div>
+        <div class="grid g2">
+          <div class="card reveal"><h3>Diseño con la bandera de Perú</h3>
+            <ul><li><b>Modo claro:</b> fondo blanco, uno de los colores de la bandera.</li><li><b>Modo oscuro:</b> rojo vino oscuro, el otro color de la bandera.</li><li>La portada con «PERÚ» en grande y una foto de cada región; al pulsarla, abre otra página con su información.</li></ul></div>
+          <div class="card reveal"><h3>Extras que se añadieron a la idea</h3>
+            <ul><li>Un anuncio o enlace de la agencia <strong>Aless Travels</strong>, negocio de una amiga de la familia.</li><li>Un cotizador de presupuesto interactivo.</li><li>Diseño multiplataforma y responsive.</li><li>Pedir a la IA ideas relevantes que se me estuvieran pasando por alto.</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PASO 2 -->
+    <section class="step" id="prompt">
+      <div class="container">
+        <div class="step-head reveal"><div class="num">2</div><div><h2>Convertir la idea en un prompt</h2><p>Con ChatGPT, de una explicación informal a unas instrucciones estructuradas.</p></div></div>
+        <div class="prose reveal">
+          <p>Le pedí a <strong>ChatGPT</strong> que transformara mis requisitos en un prompt completo. Un buen prompt es como un encargo bien hecho: cuanto más claro, menos sorpresas. El resultado se organizó en bloques:</p>
+        </div>
+        <div class="grid g3">
+          <div class="card reveal"><h3>Contexto e identidad</h3><p>Proyecto DAM, guía interactiva de Perú. Colores: blanco <code>#FFFFFF</code> y rojo <code>#C8102E</code> en modo claro; vino <code>#650D22</code> en modo oscuro, con el tema guardado en localStorage.</p></div>
+          <div class="card reveal"><h3>Pantallas</h3><p>Inicio con tres tarjetas, una pantalla por región con tres apartados, y una sección «Planifica tu aventura por Perú» con cotizador de presupuesto.</p></div>
+          <div class="card reveal"><h3>Funcionalidades</h3><p>Mapa interactivo (Leaflet y OpenStreetMap), favoritos, calendario cultural, deportes y aventura e información climática.</p></div>
+          <div class="card reveal"><h3>Responsive</h3><p>CSS Grid, Flexbox, media queries y unidades relativas para ordenador, portátil, tablet, Android e iOS.</p></div>
+          <div class="card reveal"><h3>Animaciones</h3><p>Transiciones entre pantallas, aparición progresiva de tarjetas, zoom en fotos y respeto a la preferencia de «reducir movimiento».</p></div>
+          <div class="card reveal"><h3>Calidad</h3><p>Código organizado por responsabilidades, fotos sin repetir, textos alternativos, accesibilidad y comprobaciones finales.</p></div>
+        </div>
+        <div class="note reveal"><strong>Detalle a vigilar:</strong> en este primer prompt los lugares ya no coincidían del todo con mi lista (aparecían Islas Ballestas, Reserva de Paracas, Huaca Pucllana, Montaña de los Siete Colores o Sacsayhuamán) y la agencia de viajes era ficticia. Más adelante lo corregí en el segundo prompt.</div>
+        <p class="reveal">Con el prompt listo, abrí sesión en las tres herramientas que iba a probar: <strong>ChatGPT, Gemini y Stitch</strong>. Empecé enviándoselo a ChatGPT.</p>
+      </div>
+    </section>
+
+    <!-- PASO 3 -->
+    <section class="step" id="gemini">
+      <div class="container">
+        <div class="step-head reveal"><div class="num">3</div><div><h2>Segundo intento: Gemini</h2><p>Una portada que gustó, pero con fallos de navegación y de fotos.</p></div></div>
+        <div class="grid g2">
+          <div class="card reveal"><span class="tag good">Lo que gustó</span><h3>La portada</h3><p>El diseño de inicio, con «PERÚ» protagonista y una foto de fondo, encajaba con lo que buscaba.</p></div>
+          <div class="card reveal"><span class="tag bad">Lo que falló</span><h3>La navegación y las fotos</h3><p>Todo se mostraba en la misma página, con una barra lateral junto al nombre «Perú». Yo quería que, al pulsar la imagen de una región, la web redirigiera a su propia página.</p></div>
+        </div>
+        <div class="shots c2">
+          <figure class="shot reveal"><button type="button" aria-label="Ampliar la captura de la portada de Gemini"><img src="assets/img/01-gemini-portada.png" width="579" height="511" alt="Portada generada con Gemini: el nombre PERÚ sobre una foto de Machu Picchu y los botones Explorar las 3 Regiones y Calcular Presupuesto"></button><figcaption><b>Portada de Gemini.</b> Buen punto de partida visual, con el título grande y la foto de fondo.</figcaption></figure>
+          <figure class="shot reveal"><button type="button" aria-label="Ampliar la captura de las tarjetas de región de Gemini"><img src="assets/img/02-gemini-regiones.png" width="707" height="550" alt="Tarjetas de las regiones Costa y Sierra de Gemini, ambas con la misma foto de Machu Picchu"></button><figcaption><b>Error de fotos.</b> Costa y Sierra muestran la misma imagen de Machu Picchu. Una foto de la sierra no representa a la costa.</figcaption></figure>
+        </div>
+        <div class="shots c2">
+          <figure class="shot reveal"><button type="button" aria-label="Ampliar la captura de la tarjeta Selva de Gemini"><img src="assets/img/03-gemini-selva-error.png" width="704" height="528" alt="Tarjeta de la región Selva de Gemini con la foto de un castillo europeo entre la niebla"></button><figcaption><b>Otro error.</b> La tarjeta «Selva» usa la foto de un castillo europeo, algo que no tiene relación con la Amazonía peruana.</figcaption></figure>
+          <div class="card reveal"><h3>Lecciones de este paso</h3><ul><li>Una IA puede generar un diseño bonito y aun así usar fotos que no corresponden.</li><li>Hay que pedir expresamente páginas separadas y comprobar que cada foto sea del lugar descrito.</li><li>Anoté estos fallos para mejorar el prompt después.</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PASO 4 -->
+    <section class="step" id="stitch">
+      <div class="container">
+        <div class="step-head reveal"><div class="num">4</div><div><h2>Tercer intento: los primeros prototipos en Stitch</h2><p>Diseños visuales muy trabajados, con la navegación aún por resolver.</p></div></div>
+        <div class="prose reveal">
+          <p>Con <strong>Stitch</strong>, la herramienta de diseño de Google, el resultado fue muy llamativo: una portada con «PERÚ», sus tres regiones, experiencias recomendadas, un planificador de viaje y pantallas de diseño independientes para <strong>Costa, Sierra y Selva</strong>.</p>
+          <p>El problema persistía: en la propia página principal seguía apareciendo todo reunido, cuando lo que yo quería era <strong>una página principal y tres páginas adicionales</strong>, una por región.</p>
+        </div>
+        <div class="shots tall">
+          <figure class="shot reveal"><button type="button" aria-label="Ampliar el prototipo de inicio en Stitch"><img src="assets/img/04-stitch-inicio.png" width="250" height="712" alt="Prototipo en Stitch de la página de inicio: título PERÚ, tres regiones, experiencias imprescindibles, planificador y testimonios"></button><figcaption><b>Inicio.</b> Portada, regiones, experiencias y planificador.</figcaption></figure>
+          <figure class="shot reveal"><button type="button" aria-label="Ampliar el prototipo de la región Costa en Stitch"><img src="assets/img/05-stitch-costa.png" width="241" height="718" alt="Prototipo en Stitch de la pantalla de la región Costa con patrimonio cultural, gastronomía y deportes"></button><figcaption><b>Región Costa.</b> Patrimonio, gastronomía, deportes y clima.</figcaption></figure>
+          <figure class="shot reveal"><button type="button" aria-label="Ampliar los prototipos de Sierra y Selva en Stitch"><img src="assets/img/06-stitch-sierra-selva.png" width="380" height="818" alt="Prototipos en Stitch de las pantallas de las regiones Sierra y Selva, una junto a otra"></button><figcaption><b>Sierra y Selva.</b> Mismas estructuras, con contenidos propios.</figcaption></figure>
+        </div>
+        <div class="note reveal"><strong>Prototipos originales:</strong> puedes ver el proyecto de Stitch en <a href="https://stitch.google.com/projects/1535703705261178710" target="_blank" rel="noopener">stitch.google.com/projects/1535703705261178710</a>.</div>
+      </div>
+    </section>
+
+    <!-- PASO 5 -->
+    <section class="step" id="mejora">
+      <div class="container">
+        <div class="step-head reveal"><div class="num">5</div><div><h2>Mejorar el prompt a partir de los errores</h2><p>Del análisis de los fallos salió un segundo prompt, mucho más preciso.</p></div></div>
+        <div class="prose reveal"><p>Tras ver el resultado en las distintas herramientas, junté los errores y decidí reescribir el prompt. Cada fallo se convirtió en una instrucción concreta:</p></div>
+        <div class="table-wrap reveal">
+          <table>
+            <thead><tr><th>Problema detectado</th><th>Cómo se corrigió en el nuevo prompt</th></tr></thead>
+            <tbody>
+              <tr><td>Todo aparecía en una sola página muy larga.</td><td>Se pidió una aplicación multipantalla: <code>index.html</code> y páginas separadas para Costa, Sierra, Selva, Gastronomía, Planifica y Consejos.</td></tr>
+              <tr><td>Fotos de otros países o que no eran de Perú.</td><td>Se exigió que cada foto correspondiera al lugar o plato descrito, con textos alternativos y fuentes con licencias libres.</td></tr>
+              <tr><td>Los platos también tenían fotos que no coincidían.</td><td>Fotografía propia por plato, con ingredientes, origen y restaurantes donde probarlo.</td></tr>
+              <tr><td>Faltaba la web real de la amiga de la familia.</td><td>Sección destacada de <strong>Aless Travels</strong> con enlace a <code>alesstravels.com</code> que se abre en una pestaña nueva.</td></tr>
+              <tr><td>No había ubicaciones de los restaurantes.</td><td>Cada restaurante con ciudad, dirección y enlace a Google Maps, sin inventar datos.</td></tr>
+              <tr><td>Los lugares elegidos no eran los míos.</td><td>Se recuperaron mis tres bloques por región (cultura, turismo y gastronomía).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="prose reveal" style="margin-top:2rem"><p>El nuevo prompt se tituló <strong>«PERÚ – DESCUBRE LO EXTRAORDINARIO»</strong> y se organizó en 13 apartados: identidad visual, navegación multipantalla, pantallas de las tres regiones, restaurantes, agencia colaboradora, planificador y calculadora, funcionalidades adicionales, requisitos técnicos, estructura del proyecto, calidad de imágenes, experiencia de usuario, criterios de entrega y resultado final.</p></div>
+        <div class="grid g2">
+          <div class="card reveal"><h3>Estructura de proyecto pedida</h3>
+<pre class="tree" aria-label="Estructura de carpetas del proyecto">/peru-travel
+├── index.html
+├── pages/
+│   ├── costa.html   sierra.html   selva.html
+│   └── gastronomia.html  planifica.html  consejos.html
+├── css/   style · responsive · themes · animations
+├── js/    main · navigation · favorites · search
+│          calculator · theme
+└── assets/  images/  icons/</pre></div>
+          <div class="card reveal"><h3>Funciones que debía tener</h3><ul><li>Buscador, filtros y favoritos con <code>localStorage</code>.</li><li>Mapa interactivo con Leaflet y OpenStreetMap.</li><li>Calculadora de presupuesto con validación y resumen.</li><li>Calendario de festividades y consejos para viajar.</li><li>Modo claro/oscuro que se conserva entre pantallas.</li><li>Menú móvil, animaciones y botón de volver arriba.</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PASO 6 -->
+    <section class="step" id="stitch2">
+      <div class="container">
+        <div class="step-head reveal"><div class="num">6</div><div><h2>Segunda prueba en Stitch con el prompt corregido</h2><p>Mejor, pero sin cumplir los requisitos clave.</p></div></div>
+        <div class="grid g2" style="align-items:center">
+          <div class="reveal"><div class="card"><span class="tag bad">Seguían fallando</span><ul><li>El <strong>modo oscuro no funcionaba</strong>.</li><li>No usaba el <strong>rojo vino</strong>, que representa a la bandera de Perú.</li><li>Seguía sin <strong>crear las páginas de las regiones</strong>.</li></ul><p style="margin-bottom:0">Stitch es muy buena herramienta para <em>prototipar</em> el diseño, pero no resolvió el funcionamiento real que pedía la tarea.</p></div></div>
+          <figure class="shot reveal"><button type="button" aria-label="Ampliar la captura de la segunda prueba en Stitch"><img src="assets/img/07-stitch-modo-oscuro.png" width="1076" height="835" alt="Segunda versión de Stitch: portada con título PERÚ y el texto Tierra de Sabores Milenarios y Belleza Viva en un fondo oscuro no rojo vino"></button><figcaption><b>Portada de Stitch.</b> Aspecto atractivo, pero el modo oscuro no tenía el color rojo vino buscado.</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- PASO 7 -->
+    <section class="step" id="claude">
+      <div class="container">
+        <div class="step-head reveal"><div class="num">7</div><div><h2>El resultado definitivo con Claude</h2><p>Con el prompt corregido se obtuvo una aplicación completa y funcional.</p></div></div>
+        <div class="prose reveal">
+          <p>Finalmente probé con <strong>Claude</strong> y el resultado fue bastante bueno: corrigió los errores anteriores. Se creó una aplicación completa de <strong>HTML, CSS y JavaScript</strong> con siete páginas, modo claro y oscuro persistente, favoritos, calculadora de presupuesto, festividades, consejos y la agencia Aless Travels. Las fotos de cada lugar y plato se cargan desde Wikipedia y Wikimedia Commons, con licencias libres y enlace a su origen.</p>
+          <p>Solo hubo <strong>dos cosas que retocar</strong>.</p>
+        </div>
+        <div class="grid g2">
+          <div class="card reveal"><span class="tag">Retoque 1</span><h3>El mapa de la portada</h3><p>Mi idea era poner en la portada un mapa general de Perú para elegir región o provincia. Pero el mapa se veía mal: los mosaicos mostraban el aviso <em>«403 Access blocked»</em> del servidor de OpenStreetMap, que rechazaba las peticiones. Intenté mejorarlo sin éxito, así que pedí <strong>quitar de la portada la sección de mapa, buscador y filtros</strong>.</p></div>
+          <div class="card reveal"><span class="tag">Retoque 2</span><h3>Los subtítulos «A · Costa»</h3><p>En las páginas de las regiones aparecía sobre cada título una etiqueta como «A · COSTA» o «B · SIERRA». No resultaba agradable a la vista, así que pedí <strong>eliminarla</strong> y dejar solo el título.</p></div>
+        </div>
+        <div class="shots c2">
+          <figure class="shot reveal"><button type="button" aria-label="Ampliar la captura del error del mapa"><img src="assets/img/08-mapa-error-403.png" width="1877" height="913" alt="Sección Mapa, buscador y filtros con el mapa roto: mosaicos con el mensaje 403 Access blocked y marcadores azules encima"></button><figcaption><b>Antes: el error del mapa.</b> Los mosaicos no cargaban y mostraban «Access blocked».</figcaption></figure>
+          <figure class="shot reveal"><button type="button" aria-label="Ampliar la captura del subtítulo A · Costa"><img src="assets/img/09-subtitulo-costa.png" width="1780" height="707" alt="Página de la región Costa: sobre el título Patrimonio cultural aparece la etiqueta A · COSTA, con tres tarjetas debajo"></button><figcaption><b>Antes: «A · COSTA».</b> Etiqueta encima del título «Patrimonio cultural».</figcaption></figure>
+        </div>
+        <div class="shots c2">
+          <figure class="shot reveal"><button type="button" aria-label="Ampliar la captura del subtítulo B · Sierra"><img src="assets/img/10-subtitulo-sierra.png" width="1765" height="650" alt="Página de la región Sierra: sobre el título Lugares turísticos aparece la etiqueta B · SIERRA, y la primera tarjeta muestra un mapa en lugar de una foto"></button><figcaption><b>Antes: «B · SIERRA».</b> La etiqueta se repetía en todas las regiones. En esta captura, además, la primera tarjeta mostraba una imagen que no era una foto del lugar.</figcaption></figure>
+          <div class="card reveal"><h3>Después de los retoques</h3><ul><li>La portada se queda con el título «PERÚ», las tres regiones, «¿Por qué visitar Perú?», festividades y la agencia.</li><li>Los títulos de las regiones aparecen limpios, sin etiquetas.</li><li>El resto de la web, que ya estaba bien, no se tocó.</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PASO 8 -->
+    <section class="step" id="github">
+      <div class="container">
+        <div class="step-head reveal"><div class="num">8</div><div><h2>Publicar la web en GitHub Pages</h2><p>De unos archivos en el ordenador a un enlace público.</p></div></div>
+        <ol class="ol">
+          <li class="reveal"><strong>Subir los archivos.</strong> Dentro de mi repositorio de Desarrollo de Interfaces, que ya contenía otros proyectos, subí la carpeta <code>peru-travel</code> con <em>Add file → Upload files</em>, arrastrando las carpetas <code>css</code>, <code>js</code> y <code>pages</code> y el archivo HTML principal.</li>
+          <li class="reveal"><strong>Activar GitHub Pages.</strong> En <em>Settings → Pages</em> elegí <em>Deploy from a branch</em>, rama <code>main</code> y carpeta <code>/ (root)</code>.</li>
+          <li class="reveal"><strong>Construir el enlace.</strong> Al haber varias webs en el mismo repositorio, cada una se abre añadiendo el nombre de su carpeta: <code>usuario.github.io/repositorio/carpeta/archivo.html</code>.</li>
+          <li class="reveal"><strong>Probarlo.</strong> Esperé uno o dos minutos y abrí el enlace para comprobar que las páginas, las fotos y el cambio de tema funcionaban.</li>
+        </ol>
+        <div class="note reveal"><strong>Consejo:</strong> si el archivo principal se llama <code>index.html</code>, el enlace queda más corto (termina en <code>/peru-travel/</code>) y los botones «Inicio» de las demás páginas funcionan sin errores. Con otro nombre, esos enlaces pueden dar 404.</div>
+      </div>
+    </section>
+
+    <!-- RESULTADO -->
+    <section class="step" id="resultado">
+      <div class="container">
+        <div class="step-head reveal"><div class="num">✓</div><div><h2>Resultado final y enlaces</h2><p>Todo lo creado, a un clic.</p></div></div>
+        <div class="links">
+          <a class="link-card reveal" href="https://francorv01-cyber.github.io/2-DAM---Desarrollo-de-Interfaces/peru-travel/Guia%20de%20viajes%20de%20mi%20pais%20Per%C3%BA.html" target="_blank" rel="noopener"><div class="ico">🇵🇪</div><h3>Web terminada: Guía de viajes de mi país Perú</h3><p>La aplicación final publicada en GitHub Pages.</p><span class="url">francorv01-cyber.github.io/2-DAM---Desarrollo-de-Interfaces/peru-travel/</span></a>
+          <a class="link-card reveal" href="https://stitch.google.com/projects/1535703705261178710" target="_blank" rel="noopener"><div class="ico">🎨</div><h3>Prototipos en Stitch</h3><p>Los primeros diseños de la portada y de las regiones.</p><span class="url">stitch.google.com/projects/1535703705261178710</span></a>
+          <a class="link-card reveal" href="https://github.com/francorv01-cyber/2-DAM---Desarrollo-de-Interfaces" target="_blank" rel="noopener"><div class="ico">💻</div><h3>Repositorio en GitHub</h3><p>El código de la web y de otros proyectos de Desarrollo de Interfaces.</p><span class="url">github.com/francorv01-cyber/2-DAM---Desarrollo-de-Interfaces</span></a>
+          <a class="link-card reveal" href="https://alesstravels.com/" target="_blank" rel="noopener"><div class="ico">✈️</div><h3>Aless Travels</h3><p>La agencia colaboradora que aparece en la web, con enlace externo.</p><span class="url">alesstravels.com</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- APRENDIZAJES -->
+    <section class="step" id="aprendizajes">
+      <div class="container">
+        <div class="step-head reveal"><div class="num">💡</div><div><h2>Comparativa y aprendizajes</h2><p>Qué dio cada herramienta y qué me llevo de este trabajo.</p></div></div>
+        <div class="table-wrap reveal">
+          <table>
+            <thead><tr><th>Herramienta</th><th>Para qué la usé</th><th>Resultado</th></tr></thead>
+            <tbody>
+              <tr><td><strong>ChatGPT</strong></td><td>Convertir mis requisitos en un prompt estructurado.</td><td>Prompt base completo, aunque con lugares que no eran todos los míos.</td></tr>
+              <tr><td><strong>Gemini</strong></td><td>Generar la web a partir del prompt.</td><td>Portada atractiva; todo en una página y fotos que no correspondían.</td></tr>
+              <tr><td><strong>Stitch</strong></td><td>Prototipos visuales de las pantallas.</td><td>Diseños muy vistosos. En la 2.ª prueba falló el modo oscuro y no creó las páginas de región.</td></tr>
+              <tr><td><strong>Claude</strong></td><td>Construir la aplicación completa con el prompt mejorado.</td><td>Web funcional de 7 páginas; solo dos retoques (mapa y subtítulos).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="grid g3" style="margin-top:2rem">
+          <div class="card reveal"><h3>1 · Un prompt claro</h3><p>Cuanto más concreto era lo que pedía (páginas, fotos, enlaces), menos errores aparecían.</p></div>
+          <div class="card reveal"><h3>2 · Revisar siempre</h3><p>Las fotos y los datos deben comprobarse: una IA puede equivocarse sin avisar.</p></div>
+          <div class="card reveal"><h3>3 · Iterar</h3><p>Anotar los fallos y mejorar el prompt fue lo que permitió llegar al resultado buscado.</p></div>
+        </div>
+        <h3 class="reveal" style="margin-top:2.5rem">Conocimientos de DAM aplicados</h3>
+        <div class="grid g3">
+          <div class="card reveal"><h3>Maquetación</h3><p>HTML5 semántico, cards, grids y flexbox.</p></div>
+          <div class="card reveal"><h3>Multipantalla y responsive</h3><p>Media queries, menú móvil y diseño pensado para móvil, tablet y ordenador.</p></div>
+          <div class="card reveal"><h3>JavaScript y DOM</h3><p>Eventos, componentes reutilizables y manipulación del DOM.</p></div>
+          <div class="card reveal"><h3>Almacenamiento local</h3><p>El tema y los favoritos se guardan con <code>localStorage</code>.</p></div>
+          <div class="card reveal"><h3>Formularios</h3><p>Calculadora de presupuesto con validación y mensajes de error.</p></div>
+          <div class="card reveal"><h3>APIs y organización</h3><p>Consumo de la API pública de Wikipedia para las fotos y código separado en estructura, estilos y lógica.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p><strong>Proyecto DAM · Desarrollo de Interfaces</strong> · Documentación del proceso de creación de «Guía de viajes de mi país Perú»</p>
+      <p>Capturas: archivo personal del proyecto. Agencia colaboradora: <a href="https://alesstravels.com/" target="_blank" rel="noopener">Aless Travels</a>.</p>
+    </div>
+  </footer>
+
+  <button class="totop" id="toTop" aria-label="Volver arriba">↑</button>
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Imagen ampliada" aria-hidden="true">
+    <button type="button" aria-label="Cerrar imagen">✕</button>
+    <img src="" alt="">
+    <p></p>
+  </div>
+
+  <script src="js/main.js"></script>
+  <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+</body>
+</html>
